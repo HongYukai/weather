@@ -2,9 +2,7 @@
 
 
 
-![diagram](diagram.png)
-
-
+![diagram](../../diagram.png)
 
 
 
