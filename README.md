@@ -112,14 +112,8 @@
 /**  
    * Get weather info of one city from open weather api
    *
-   * @param city     String, name of city
-   * @param dc	int, date count(1->24h 7->a week 15->half month)
-   * @return instance of WeatherInfo
+   * async call, see the code and annotation for details
    */
-  WeatherInfo getWeatherInfo(
-      String city,
-      int dc,
-  );
 ```
 
 
