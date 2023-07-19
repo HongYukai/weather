@@ -1,4 +1,4 @@
-#1. Architecture Diagram
+# 1. Architecture Diagram
 
 ![](https://github.com/HongYukai/weather/blob/main/architecture.png)
 
