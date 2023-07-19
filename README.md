@@ -1,8 +1,6 @@
 #1. Architecture Diagram
 
-
-
-![diagram](../../diagram.png)
+![](https://github.com/HongYukai/weather/blob/main/architecture.png)
 
 
 
