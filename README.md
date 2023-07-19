@@ -8,7 +8,7 @@
 
 # 2. Interfaces
 
-##2.1 MainActivity
+## 2.1 MainActivity
 
 ```java
 /**  
