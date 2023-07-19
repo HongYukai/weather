@@ -14,41 +14,28 @@
 /**  
    * get one week weather info and show
    *
-   * @param city, String, name of city
-   * @return none
+   * @param locationInfo 
    */
   void initOneWeekWeather(
-      String city
-  );
-
-/**  
-   * click to show half month weather
-   *
-   * @param city, String, name of city
-   * @return none
-   */
-  void showHalfMonthWeather(
-      String city
+      LocationInfo locationInfo
   );
 
 /**  
    * click to show the details of current weather info(turn to HourlyActivity)
    *
-   * @param city, String, name of city
-   * @return none
+   * @param locationInfo 
    */
   void showHourlyWeather(
-      String city
+      LocationInfo locationInfo
   );
 
 /**  
    * click to show half month weather(turn to HalfMonthActivity)
    *
-   * @param city, String, name of city
-   * @return none
+   * @param locationInfo 
    */
   void showHalfMonthWeather(
-      String city
+      LocationInfo locationInfo
   );
 
 /**  
@@ -72,8 +59,7 @@
 /**  
    * show cities for user to select
    *
-   * @param location	instance of Location, user's current location
-   * @return none
+   * @param locationInfo 
    */
   void showCitySelectionDialog(
       Location location
@@ -86,10 +72,10 @@
 /**  
    * get hourly weather info and show
    *
-   * @param city     String, name of city
+   * @param locationInfo
    */
-  WeatherInfo InitHourlyWeatherInfo(
-      String city,
+  void InitHourlyWeatherInfo(
+      LocationInfo locationInfo,
   );
 ```
 
@@ -99,10 +85,10 @@
 /**  
    * get half month weather info and show
    *
-   * @param city     String, name of city
+   * @param locationInfo 
    */
-  WeatherInfo InitHalfMonthWeatherInfo(
-      String city,
+  void InitHalfMonthWeatherInfo(
+      locationInfo locationInfo,
   );
 ```
 
@@ -136,6 +122,12 @@ class WeatherInfo {
     String pressure;
     String msg;
     // .......
+}
+
+class LocationInfo {
+    double lat;
+    double lon;
+    String city; // name of city
 }
 // .......
 ```
