@@ -1,0 +1,131 @@
+package org.comp7506.weather.service;
+
+import android.app.IntentService;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+
+import org.comp7506.weather.R;
+import org.comp7506.weather.activity.MainActivity;
+import org.comp7506.weather.model.LocationInfo;
+import org.comp7506.weather.model.WeatherInfo;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
+/**
+ * An {@link IntentService} subclass for handling asynchronous task requests in
+ * a service on a separate handler thread.
+ */
+public class WeatherInquiryService extends IntentService {
+    String msg = "NET IO : ";
+    private static final String API_KEY = "642fb7578586f3a2d61c84a251a41c38";
+
+    private static final String CURRENT_URL = "https://api.openweathermap.org/data/2.5/weather";
+
+    private static final String CURRENT_WEATHER = "CURRENT_WEATHER";
+
+    public WeatherInquiryService() {
+        super("WeatherInquiryService");
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        if (intent != null) {
+            final String action = intent.getAction();
+            final LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(MainActivity.LOCATION_KEY);
+            if (CURRENT_WEATHER.equalsIgnoreCase(action)) {
+                makeRequest(locationInfo, CURRENT_URL);
+            } else {
+                /**
+                 *  TODO: 增加hourly weather, halfmonth weather
+                 */
+            }
+        }
+    }
+
+    private void makeRequest(LocationInfo locationInfo, String url) {
+        String lat = String.valueOf(locationInfo.getLat());
+
+        String lon = String.valueOf(locationInfo.getLon());
+
+        try {
+            // 构建带参数的 URL，可能需要根据不同的请求填充参数，这里只做了current的
+            String encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") + "&lon=" + URLEncoder.encode(lon, "UTF-8") + "&exclude=minutely" + "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
+            // 创建 URL 对象
+            java.net.URL apiUrl = new URL(encodedUrl);
+
+            // 打开连接
+            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+
+            // 设置请求方法为 GET
+            connection.setRequestMethod("GET");
+
+            // 发起请求
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // 请求成功，读取响应内容
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                reader.close();
+
+                // 解析 JSON 响应，可能需要根据不同的响应做对应的解析，这里只做了current的
+                JSONObject jsonResponse = new JSONObject(response.toString());
+
+                Log.d(msg, jsonResponse.toString());
+
+                WeatherInfo weatherInfo = new WeatherInfo();
+                // 提取需要的数据
+                JSONArray weather = jsonResponse.getJSONArray("weather");
+                for (int i = 0; i < weather.length(); i++) {
+                    JSONObject item = weather.getJSONObject(i);
+                    String main = item.getString("main");
+                    String desc = item.getString("description");
+                    weatherInfo.setMain(main);
+                    weatherInfo.setDescription(desc);
+                }
+
+                JSONObject main = jsonResponse.getJSONObject("main");
+
+                weatherInfo.setTemp(main.getDouble("temp") - 273.15);
+
+                Log.d(msg, weatherInfo.toString());
+
+                Intent intent=new Intent();
+
+                intent.setAction(CURRENT_WEATHER);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable(MainActivity.WEATHER_KEY, weatherInfo);
+
+                intent.putExtras(bundle);
+
+                sendBroadcast(intent);
+
+            } else {
+                // 请求失败，输出错误信息
+                Log.d(msg, "Request failed. Response Code: " + responseCode + "\nFROM: " + encodedUrl);
+            }
+
+            // 断开连接
+            connection.disconnect();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "coord": {
+        "lon": -122.084,
+        "lat": 37.422
+    },
+    "weather": [
+        {
+            "id": 721,
+            "main": "Haze",
+            "description": "haze",
+            "icon": "50d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 295.88,
+        "feels_like": 295.91,
+        "temp_min": 289.68,
+        "temp_max": 300.93,
+        "pressure": 1011,
+        "humidity": 65
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 3.6,
+        "deg": 350
+    },
+    "clouds": {
+        "all": 0
+    },
+    "dt": 1689611412,
+    "sys": {
+        "type": 2,
+        "id": 2010364,
+        "country": "US",
+        "sunrise": 1689598832,
+        "sunset": 1689650881
+    },
+    "timezone": -25200,
+    "id": 5375480,
+    "name": "Mountain View",
+    "cod": 200
+}
