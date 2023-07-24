@@ -33,7 +33,7 @@ public class WeatherInquiryService extends IntentService {
 
     private static final String CURRENT_WEATHER = "CURRENT_WEATHER";
 
-    private static final String NEXT_WEEK_WEATHER = "NEXT_WEEK_WEATHER";
+    private static final String NEXT_WEEK_WEATHER = "NEXT 7 DAYS";
 
     private static final int TIMEOUT = 5000;
 
@@ -45,31 +45,36 @@ public class WeatherInquiryService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
+            System.out.println("intent action: " + action);
             final LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(MainActivity.LOCATION_KEY);
             if (CURRENT_WEATHER.equalsIgnoreCase(action)) {
-                makeRequest(locationInfo, CURRENT_URL);
+                makeRequest(locationInfo, CURRENT_URL, CURRENT_WEATHER);
                 //TODO: 增加hourly weather, halfmonth weather
             } else if (NEXT_WEEK_WEATHER.equalsIgnoreCase(action)){
-                makeRequest(locationInfo, NEXT_WEEK_URL);
+                makeRequest(locationInfo, NEXT_WEEK_URL, NEXT_WEEK_WEATHER);
             }
         }
     }
 
-    private void makeRequest(LocationInfo locationInfo, String url) {
+    private String makeRequest(LocationInfo locationInfo, String url, String flag) {
+        System.out.println("current flag is " + flag);
         String lat = String.valueOf(locationInfo.getLat());
 
         String lon = String.valueOf(locationInfo.getLon());
 
+        String city = String.valueOf(locationInfo.getCity());
+        System.out.println("city: " + city);
+
         try {
-//            String encodedUrl = "";
-//            if(Objects.equals(flag, CURRENT_WEATHER)) {
+            String encodedUrl = "";
+            if(CURRENT_WEATHER.equalsIgnoreCase(flag)) {
                 // 构建带参数的 URL，可能需要根据不同的请求填充参数，这里只做了current的
-            String encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") +
+                 encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") +
                         "&lon=" + URLEncoder.encode(lon, "UTF-8") + "&exclude=minutely" +
                         "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
-//            }else if(Objects.equals(flag, NEXT_WEEK_WEATHER)){
-//                encodedUrl = url;
-//            }
+            }else if(NEXT_WEEK_WEATHER.equalsIgnoreCase(flag)){
+                encodedUrl = url + "&city=" + URLEncoder.encode(city, "UTF-8");
+            }
             // 创建 URL 对象
             java.net.URL apiUrl = new URL(encodedUrl);
 
@@ -91,6 +96,14 @@ public class WeatherInquiryService extends IntentService {
 
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
+
+                }
+
+                //just to check whether it can receive the message
+
+                if(flag == NEXT_WEEK_WEATHER){
+                    System.out.println(response.toString());
+                    return response.toString();
                 }
 
                 reader.close();
@@ -120,6 +133,7 @@ public class WeatherInquiryService extends IntentService {
                 Intent intent=new Intent();
 
                 intent.setAction(CURRENT_WEATHER);
+//                intent.setAction(flag);
 
                 Bundle bundle = new Bundle();
 
@@ -136,8 +150,12 @@ public class WeatherInquiryService extends IntentService {
 
             // 断开连接
             connection.disconnect();
+
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
+
 }

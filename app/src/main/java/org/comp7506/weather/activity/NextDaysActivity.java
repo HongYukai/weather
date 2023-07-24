@@ -2,15 +2,43 @@ package org.comp7506.weather.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.SimpleAdapter;
 
 import org.comp7506.weather.R;
 
-public class NextDaysActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class NextDaysActivity extends ListActivity {
+
+    ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_next_days);
+
+        Intent intent = this.getIntent();
+        ArrayList<String> date = intent.getStringArrayListExtra("date");
+        ArrayList<String> day = intent.getStringArrayListExtra("day");
+
+        for(int i = 0; i < date.size(); i++){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("date", date.get(i));
+            map.put("day", day.get(i));
+            list.add(map);
+        }
+
+        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.activity_next_days,
+                                                    new String[]{"date", "day"},
+                                                    new int[]{R.id.date, R.id.day});
+
+        setListAdapter(adapter);
+
+
     }
+
 }
