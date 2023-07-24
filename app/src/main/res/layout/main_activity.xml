@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/Theme.MaterialComponents.Bridge"
                 android:gravity="center"
-                android:text="@string/next_15_days_label"
+                android:text="@string/next_7_days"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"

@@ -12,6 +12,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +24,9 @@ import org.comp7506.weather.model.LocationInfo;
 import org.comp7506.weather.model.WeatherInfo;
 import org.comp7506.weather.service.WeatherInquiryService;
 
-public class MainActivity extends Activity implements LocationListener {
+import java.util.ArrayList;
+
+public class MainActivity extends Activity implements LocationListener, View.OnClickListener {
     String msg = "Android : ";
 
     public static String LOCATION_KEY = "lklklk";
@@ -36,6 +40,8 @@ public class MainActivity extends Activity implements LocationListener {
     private WeatherReceiver weatherReceiver;
 
     private TextView text;
+
+    private Button nextDaysBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +65,16 @@ public class MainActivity extends Activity implements LocationListener {
 
         weatherReceiver= new WeatherReceiver();
 
-        IntentFilter filter=new IntentFilter();
+        IntentFilter filter= new IntentFilter();
 
         filter.addAction(this.getString(R.string.current_weather));
 
         this.registerReceiver(weatherReceiver, filter);
 
         text = (TextView) findViewById(R.id.description_text_view);
+
+        nextDaysBtn = (Button) findViewById(R.id.next_days_button);
+        nextDaysBtn.setOnClickListener(this);
     }
 
     /** 当活动即将可见时调用 */
@@ -112,6 +121,42 @@ public class MainActivity extends Activity implements LocationListener {
         intent.putExtras(bundle);
 
         startService(intent);
+    }
+
+    /** 当点击按钮可得到接下来七天的信息*/
+    @Override
+    public void onClick(View v){
+        if (v.getId() == R.id.next_days_button){
+            nextWeather(locationInfo);
+
+            System.out.println("click button works well");
+            Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
+            ArrayList<String> date = new ArrayList<>();
+            ArrayList<String> day = new ArrayList<>();
+            date.add("2023-07-24");
+            day.add("Monday");
+            date.add("2023-07-25");
+            day.add("Tuesday");
+
+            intent.putStringArrayListExtra("date", date);
+            intent.putStringArrayListExtra("day", day);
+            startActivity(intent);
+        }
+    }
+
+    private void nextWeather(LocationInfo locationInfo){
+        Intent intent = new Intent(this, WeatherInquiryService.class);
+
+        intent.setAction(this.getString(R.string.next_7_days));
+
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable(LOCATION_KEY, locationInfo);
+
+        intent.putExtras(bundle);
+
+        startService(intent);
+
     }
 
     /** 当其他活动获得焦点时调用 */
