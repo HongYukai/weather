@@ -12,6 +12,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +24,7 @@ import org.comp7506.weather.model.LocationInfo;
 import org.comp7506.weather.model.WeatherInfo;
 import org.comp7506.weather.service.WeatherInquiryService;
 
-public class MainActivity extends Activity implements LocationListener {
+public class MainActivity extends Activity implements LocationListener, View.OnClickListener {
     String msg = "Android : ";
 
     public static String LOCATION_KEY = "lklklk";
@@ -36,6 +38,8 @@ public class MainActivity extends Activity implements LocationListener {
     private WeatherReceiver weatherReceiver;
 
     private TextView text;
+
+    private Button nextDaysBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,9 @@ public class MainActivity extends Activity implements LocationListener {
         this.registerReceiver(weatherReceiver, filter);
 
         text = (TextView) findViewById(R.id.description_text_view);
+
+        nextDaysBtn = (Button) findViewById(R.id.next_days_button);
+        nextDaysBtn.setOnClickListener(this);
     }
 
     /** 当活动即将可见时调用 */
@@ -114,6 +121,14 @@ public class MainActivity extends Activity implements LocationListener {
         intent.putExtras(bundle);
 
         startService(intent);
+    }
+
+    /** 当点击按钮可得到接下来七天的信息*/
+    @Override
+    public void onClick(View v){
+        if (v.getId() == R.id.next_days_button){
+            System.out.println("click button works well");
+        }
     }
 
     /** 当其他活动获得焦点时调用 */

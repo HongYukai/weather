@@ -19,7 +19,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
@@ -30,7 +29,13 @@ public class WeatherInquiryService extends IntentService {
 
     private static final String CURRENT_URL = "https://api.openweathermap.org/data/2.5/weather";
 
+    private static final String NEXT_WEEK_URL = "https://www.yiketianqi.com/free/week?unescape=1&appid=63263372&appsecret=86eRO3z7";
+
     private static final String CURRENT_WEATHER = "CURRENT_WEATHER";
+
+    private static final String NEXT_WEEK_WEATHER = "NEXT_WEEK_WEATHER";
+
+    private static final int TIMEOUT = 5000;
 
     public WeatherInquiryService() {
         super("WeatherInquiryService");
@@ -43,10 +48,9 @@ public class WeatherInquiryService extends IntentService {
             final LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(MainActivity.LOCATION_KEY);
             if (CURRENT_WEATHER.equalsIgnoreCase(action)) {
                 makeRequest(locationInfo, CURRENT_URL);
-            } else {
-                /**
-                 *  TODO: 增加hourly weather, halfmonth weather
-                 */
+                //TODO: 增加hourly weather, halfmonth weather
+            } else if (NEXT_WEEK_WEATHER.equalsIgnoreCase(action)){
+                makeRequest(locationInfo, NEXT_WEEK_URL);
             }
         }
     }
@@ -57,8 +61,15 @@ public class WeatherInquiryService extends IntentService {
         String lon = String.valueOf(locationInfo.getLon());
 
         try {
-            // 构建带参数的 URL，可能需要根据不同的请求填充参数，这里只做了current的
-            String encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") + "&lon=" + URLEncoder.encode(lon, "UTF-8") + "&exclude=minutely" + "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
+//            String encodedUrl = "";
+//            if(Objects.equals(flag, CURRENT_WEATHER)) {
+                // 构建带参数的 URL，可能需要根据不同的请求填充参数，这里只做了current的
+            String encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") +
+                        "&lon=" + URLEncoder.encode(lon, "UTF-8") + "&exclude=minutely" +
+                        "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
+//            }else if(Objects.equals(flag, NEXT_WEEK_WEATHER)){
+//                encodedUrl = url;
+//            }
             // 创建 URL 对象
             java.net.URL apiUrl = new URL(encodedUrl);
 
@@ -67,6 +78,7 @@ public class WeatherInquiryService extends IntentService {
 
             // 设置请求方法为 GET
             connection.setRequestMethod("GET");
+            connection.setConnectTimeout(TIMEOUT);
 
             // 发起请求
             int responseCode = connection.getResponseCode();
