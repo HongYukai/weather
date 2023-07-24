@@ -141,15 +141,15 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
             System.out.println("click button works well");
             Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
-            ArrayList<String> date = new ArrayList<>();
-            ArrayList<String> day = new ArrayList<>();
-            date.add("2023-07-24");
-            day.add("Monday");
-            date.add("2023-07-25");
-            day.add("Tuesday");
-
-            intent.putStringArrayListExtra("date", date);
-            intent.putStringArrayListExtra("day", day);
+//            ArrayList<String> date = new ArrayList<>();
+//            ArrayList<String> day = new ArrayList<>();
+//            date.add("2023-07-24");
+//            day.add("Monday");
+//            date.add("2023-07-25");
+//            day.add("Tuesday");
+//
+//            intent.putStringArrayListExtra("date", date);
+//            intent.putStringArrayListExtra("day", day);
             startActivity(intent);
         }
     }

@@ -3,7 +3,7 @@ package org.comp7506.weather.model;
 import org.comp7506.weather.bean.DayWeatherBean;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 public class WeatherInfo implements Serializable {
     private double temp;
@@ -12,7 +12,7 @@ public class WeatherInfo implements Serializable {
 
     private String description;
 
-    private List<DayWeatherBean> DATA_ARRAY;
+    private ArrayList<DayWeatherBean> DATA_ARRAY;
 
     public double getTemp() {
         return temp;
@@ -39,11 +39,11 @@ public class WeatherInfo implements Serializable {
     }
 
 
-    public List<DayWeatherBean> getDATA_ARRAY() {
+    public ArrayList<DayWeatherBean> getDATA_ARRAY() {
         return DATA_ARRAY;
     }
 
-    public void setDATA_ARRAY(List<DayWeatherBean> DATA_ARRAY) {
+    public void setDATA_ARRAY(ArrayList<DayWeatherBean> DATA_ARRAY) {
         this.DATA_ARRAY = DATA_ARRAY;
     }
 

@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.widget.SimpleAdapter;
 
 import org.comp7506.weather.R;
+import org.comp7506.weather.bean.DayWeatherBean;
+import org.comp7506.weather.bean.WeatherBean;
+import org.comp7506.weather.model.WeatherInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NextDaysActivity extends ListActivity {
@@ -37,6 +41,16 @@ public class NextDaysActivity extends ListActivity {
                                                     new int[]{R.id.date, R.id.day});
 
         setListAdapter(adapter);
+
+
+    }
+
+    private void updateUiOfWeather(WeatherInfo weatherInfo){
+        if(weatherInfo == null){
+            return;
+        }
+        ArrayList<DayWeatherBean> weatherList  = weatherInfo.getDATA_ARRAY();
+        DayWeatherBean dayWeather = weatherList.get(0);
 
 
     }
