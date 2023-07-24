@@ -137,7 +137,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
     @Override
     public void onClick(View v){
         if (v.getId() == R.id.next_days_button){
-            nextWeather(locationInfo);
+//            nextWeather(locationInfo);
 
             System.out.println("click button works well");
             Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
@@ -166,7 +166,6 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         intent.putExtras(bundle);
 
         startService(intent);
-
     }
 
     /** 当其他活动获得焦点时调用 */

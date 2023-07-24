@@ -10,7 +10,9 @@ import android.widget.SimpleAdapter;
 import org.comp7506.weather.R;
 import org.comp7506.weather.bean.DayWeatherBean;
 import org.comp7506.weather.bean.WeatherBean;
+import org.comp7506.weather.model.LocationInfo;
 import org.comp7506.weather.model.WeatherInfo;
+import org.comp7506.weather.service.WeatherInquiryService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 public class NextDaysActivity extends ListActivity {
+    public static String LOCATION_KEY = "lklklk";
+
+    public static String WEATHER_KEY = "wkwkwk";
 
     ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
@@ -26,6 +31,10 @@ public class NextDaysActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = this.getIntent();
+        System.out.println(intent.getSerializableExtra(LOCATION_KEY));
+//        LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(LOCATION_KEY);
+//        nextWeather(locationInfo);
+
         ArrayList<String> date = intent.getStringArrayListExtra("date");
         ArrayList<String> day = intent.getStringArrayListExtra("day");
 
@@ -43,6 +52,20 @@ public class NextDaysActivity extends ListActivity {
         setListAdapter(adapter);
 
 
+    }
+
+    private void nextWeather(LocationInfo locationInfo){
+        Intent intent = new Intent(this, WeatherInquiryService.class);
+
+        intent.setAction(this.getString(R.string.next_7_days));
+
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable(LOCATION_KEY, locationInfo);
+
+        intent.putExtras(bundle);
+
+        startService(intent);
     }
 
     private void updateUiOfWeather(WeatherInfo weatherInfo){
