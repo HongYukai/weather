@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.comp7506.weather.R;
 import org.comp7506.weather.activity.MainActivity;
+import org.comp7506.weather.bean.DayWeatherBean;
 import org.comp7506.weather.model.LocationInfo;
 import org.comp7506.weather.model.WeatherInfo;
 import org.json.JSONArray;
@@ -19,6 +22,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
@@ -29,7 +34,9 @@ public class WeatherInquiryService extends IntentService {
 
     private static final String CURRENT_URL = "https://api.openweathermap.org/data/2.5/weather";
 
+//    private static final String NEXT_WEEK_URL = "https://devapi.qweather.com/v7/weather/7d";
     private static final String NEXT_WEEK_URL = "https://www.yiketianqi.com/free/week?unescape=1&appid=63263372&appsecret=86eRO3z7";
+    private static final String NEXT_KEY = "18b5cb7b53994bff9296aa3195f38d45";
 
     private static final String CURRENT_WEATHER = "CURRENT_WEATHER";
 
@@ -56,7 +63,7 @@ public class WeatherInquiryService extends IntentService {
         }
     }
 
-    private String makeRequest(LocationInfo locationInfo, String url, String flag) {
+    private void makeRequest(LocationInfo locationInfo, String url, String flag) {
         System.out.println("current flag is " + flag);
         String lat = String.valueOf(locationInfo.getLat());
 
@@ -69,11 +76,11 @@ public class WeatherInquiryService extends IntentService {
             String encodedUrl = "";
             if(CURRENT_WEATHER.equalsIgnoreCase(flag)) {
                 // 构建带参数的 URL，可能需要根据不同的请求填充参数，这里只做了current的
-                 encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") +
+                encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") +
                         "&lon=" + URLEncoder.encode(lon, "UTF-8") + "&exclude=minutely" +
                         "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
             }else if(NEXT_WEEK_WEATHER.equalsIgnoreCase(flag)){
-                encodedUrl = url + "&city=" + URLEncoder.encode(city, "UTF-8");
+                encodedUrl = url + "&city=" +city;
             }
             // 创建 URL 对象
             java.net.URL apiUrl = new URL(encodedUrl);
@@ -99,13 +106,6 @@ public class WeatherInquiryService extends IntentService {
 
                 }
 
-                //just to check whether it can receive the message
-
-                if(flag == NEXT_WEEK_WEATHER){
-                    System.out.println(response.toString());
-                    return response.toString();
-                }
-
                 reader.close();
 
                 // 解析 JSON 响应，可能需要根据不同的响应做对应的解析，这里只做了current的
@@ -114,26 +114,54 @@ public class WeatherInquiryService extends IntentService {
                 Log.d(msg, jsonResponse.toString());
 
                 WeatherInfo weatherInfo = new WeatherInfo();
-                // 提取需要的数据
-                JSONArray weather = jsonResponse.getJSONArray("weather");
-                for (int i = 0; i < weather.length(); i++) {
-                    JSONObject item = weather.getJSONObject(i);
-                    String main = item.getString("main");
-                    String desc = item.getString("description");
-                    weatherInfo.setMain(main);
-                    weatherInfo.setDescription(desc);
+
+                //current开始
+                if(CURRENT_WEATHER.equalsIgnoreCase(flag)) {
+                    // 提取需要的数据,这里需要修改 丢失了湿度和wind的数据在“main“和”wind“
+                    JSONArray weather = jsonResponse.getJSONArray("weather");
+                    for (int i = 0; i < weather.length(); i++) {
+                        JSONObject item = weather.getJSONObject(i);
+                        String main = item.getString("main");
+                        String desc = item.getString("description");
+                        weatherInfo.setMain(main);
+                        weatherInfo.setDescription(desc);
+                    }
+
+                    JSONObject main = jsonResponse.getJSONObject("main");
+
+                    weatherInfo.setTemp(main.getDouble("temp") - 273.15);
+
+                } //current到这里
+
+                if (NEXT_WEEK_WEATHER.equalsIgnoreCase(flag)) {
+                    JSONArray data = jsonResponse.getJSONArray("data");
+                    ArrayList<DayWeatherBean> weathersList = new ArrayList<>();
+                    for (int i = 0; i < data.length(); i++) {
+                        DayWeatherBean dayweather = new DayWeatherBean();
+                        JSONObject item = data.getJSONObject(i);
+                        String day = item.getString("day");
+                        String date= item.getString("date");
+                        String weaImg = item.getString("wea_img");
+                        String tempH = item.getString("wea1");
+                        String tempL = item.getString("wea1");
+                        dayweather.setDAY(day);
+                        dayweather.setDATE(date);
+                        dayweather.setWEATHER_IMG(weaImg);
+                        dayweather.setHEIGHT_TEMP(tempH);
+                        dayweather.setLOWEST_TEMP(tempL);
+                        weathersList.add(dayweather);
+                    }
+
+                    weatherInfo.setDATA_ARRAY(weathersList);
                 }
 
-                JSONObject main = jsonResponse.getJSONObject("main");
-
-                weatherInfo.setTemp(main.getDouble("temp") - 273.15);
 
                 Log.d(msg, weatherInfo.toString());
 
-                Intent intent=new Intent();
+                Intent intent = new Intent();
 
-                intent.setAction(CURRENT_WEATHER);
-//                intent.setAction(flag);
+//                intent.setAction(CURRENT_WEATHER);
+                intent.setAction(flag);
 
                 Bundle bundle = new Bundle();
 
@@ -142,6 +170,8 @@ public class WeatherInquiryService extends IntentService {
                 intent.putExtras(bundle);
 
                 sendBroadcast(intent);
+
+
 
             } else {
                 // 请求失败，输出错误信息
@@ -155,7 +185,8 @@ public class WeatherInquiryService extends IntentService {
             e.printStackTrace();
         }
 
-        return null;
     }
+
+
 
 }
