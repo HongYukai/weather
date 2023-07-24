@@ -99,13 +99,11 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             return;
         }
 
-        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        locationInfo.setLat(lastKnownLocation.getLatitude());
-
-        locationInfo.setLon(lastKnownLocation.getLongitude());
-
-        initCurrentWeather(locationInfo);
+//        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//
+//        locationInfo.setLat(lastKnownLocation.getLatitude());
+//
+//        locationInfo.setLon(lastKnownLocation.getLongitude());
     }
 
     /** 异步请求current weather，返回的结果由WeatherReceiver处理 */
@@ -154,8 +152,10 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+        Log.d(msg, "1");
         locationInfo.setLat(location.getLatitude());
         locationInfo.setLon(location.getLongitude());
+        initCurrentWeather(locationInfo);
         // 停止位置更新
         locationManager.removeUpdates(this);
     }
