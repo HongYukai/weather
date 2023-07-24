@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     public static String LOCATION_KEY = "lklklk";
 
-    public static String WEATHER_KEY = "wkwkwk";
+    public final String WEATHER_KEY = "cwk";
 
     private LocationInfo locationInfo = new LocationInfo();
 
@@ -223,7 +223,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(MainActivity.WEATHER_KEY);
+            final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
             text.setText(weatherInfo.getMain());
         }
     }

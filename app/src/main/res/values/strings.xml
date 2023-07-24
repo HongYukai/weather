@@ -3,6 +3,7 @@
     <string name="api_key">642fb7578586f3a2d61c84a251a41c38</string>
     <string name="url">https://api.openweathermap.org/data/3.0/onecall</string>
     <string name="current_weather">CURRENT_WEATHER</string>
+    <string name="next_week_weather">NEXT 7 DAYS</string>
     <string name="cancel_label">Cancel</string>
     <string name="store_label">Store</string>
     <string name="license_title">License</string>

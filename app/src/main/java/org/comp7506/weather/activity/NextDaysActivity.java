@@ -3,8 +3,12 @@ package org.comp7506.weather.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SimpleAdapter;
 
 import org.comp7506.weather.R;
@@ -20,20 +24,18 @@ import java.util.List;
 import java.util.Map;
 
 public class NextDaysActivity extends ListActivity {
-    public static String LOCATION_KEY = "lklklk";
-
-    public static String WEATHER_KEY = "wkwkwk";
 
     ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+    public final String WEATHER_KEY = "nwk";
+
+    private WeatherReceiver weatherReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = this.getIntent();
-        System.out.println(intent.getSerializableExtra(LOCATION_KEY));
-//        LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(LOCATION_KEY);
-//        nextWeather(locationInfo);
 
         ArrayList<String> date = intent.getStringArrayListExtra("date");
         ArrayList<String> day = intent.getStringArrayListExtra("day");
@@ -51,31 +53,25 @@ public class NextDaysActivity extends ListActivity {
 
         setListAdapter(adapter);
 
+        weatherReceiver = new WeatherReceiver();
+
+        IntentFilter filter= new IntentFilter();
+
+        filter.addAction(this.getString(R.string.next_week_weather));
+
+        this.registerReceiver(weatherReceiver, filter);
+
 
     }
 
-    private void nextWeather(LocationInfo locationInfo){
-        Intent intent = new Intent(this, WeatherInquiryService.class);
+    public class WeatherReceiver extends BroadcastReceiver {
 
-        intent.setAction(this.getString(R.string.next_7_days));
-
-        Bundle bundle = new Bundle();
-
-        bundle.putSerializable(LOCATION_KEY, locationInfo);
-
-        intent.putExtras(bundle);
-
-        startService(intent);
-    }
-
-    private void updateUiOfWeather(WeatherInfo weatherInfo){
-        if(weatherInfo == null){
-            return;
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
+            /** TODO: your job **/
+            Log.d("test", weatherInfo.toString());
         }
-        ArrayList<DayWeatherBean> weatherList  = weatherInfo.getDATA_ARRAY();
-        DayWeatherBean dayWeather = weatherList.get(0);
-
-
     }
 
 }

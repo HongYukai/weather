@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import org.comp7506.weather.R;
 import org.comp7506.weather.activity.MainActivity;
+import org.comp7506.weather.activity.NextDaysActivity;
 import org.comp7506.weather.bean.DayWeatherBean;
 import org.comp7506.weather.model.LocationInfo;
 import org.comp7506.weather.model.WeatherInfo;
@@ -136,6 +137,20 @@ public class WeatherInquiryService extends IntentService {
 
                     weatherInfo.setTemp(main.getDouble("temp") - 273.15);
 
+                    Log.d(msg, weatherInfo.toString());
+
+                    Intent intent = new Intent();
+
+                    intent.setAction(flag);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putSerializable(new MainActivity().WEATHER_KEY, weatherInfo);
+
+                    intent.putExtras(bundle);
+
+                    sendBroadcast(intent);
+
                 } //current到这里
 
                 if (NEXT_WEEK_WEATHER.equalsIgnoreCase(flag)) {
@@ -158,23 +173,21 @@ public class WeatherInquiryService extends IntentService {
                     }
 
                     weatherInfo.setDATA_ARRAY(weathersList);
+
+                    Log.d(msg, weatherInfo.toString());
+
+                    Intent intent = new Intent();
+
+                    intent.setAction(flag);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putSerializable(new NextDaysActivity().WEATHER_KEY, weatherInfo);
+
+                    intent.putExtras(bundle);
+
+                    sendBroadcast(intent);
                 }
-
-
-                Log.d(msg, weatherInfo.toString());
-
-                Intent intent = new Intent();
-
-//                intent.setAction(CURRENT_WEATHER);
-                intent.setAction(flag);
-
-                Bundle bundle = new Bundle();
-
-                bundle.putSerializable(MainActivity.WEATHER_KEY, weatherInfo);
-
-                intent.putExtras(bundle);
-
-                sendBroadcast(intent);
 
             } else {
                 // 请求失败，输出错误信息
