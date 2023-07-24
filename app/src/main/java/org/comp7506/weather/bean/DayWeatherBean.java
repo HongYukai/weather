@@ -2,7 +2,9 @@ package org.comp7506.weather.bean;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DayWeatherBean {
+import java.io.Serializable;
+
+public class DayWeatherBean implements Serializable {
 
     @SerializedName("week")
     private String DAY;
