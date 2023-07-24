@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +27,8 @@ import org.comp7506.weather.model.WeatherInfo;
 import org.comp7506.weather.service.WeatherInquiryService;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends Activity implements LocationListener, View.OnClickListener {
     String msg = "Android : ";
@@ -74,6 +78,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         text = (TextView) findViewById(R.id.description_text_view);
 
         nextDaysBtn = (Button) findViewById(R.id.next_days_button);
+
         nextDaysBtn.setOnClickListener(this);
     }
 
@@ -110,11 +115,16 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     /** 异步请求current weather，返回的结果由WeatherReceiver处理 */
     void initCurrentWeather(LocationInfo locationInfo) {
+
         Intent intent = new Intent(this, WeatherInquiryService.class);
 
         intent.setAction(this.getString(R.string.current_weather));
 
         Bundle bundle = new Bundle();
+
+        locationInfo.setLat(22.3);
+
+        locationInfo.setLon(114.0);
 
         bundle.putSerializable(LOCATION_KEY, locationInfo);
 
@@ -182,12 +192,32 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        Log.d(msg, "1");
         locationInfo.setLat(location.getLatitude());
         locationInfo.setLon(location.getLongitude());
+//        locationInfo.setCity(getCity(locationInfo));
+        locationInfo.setCity("香港");
         initCurrentWeather(locationInfo);
         // 停止位置更新
         locationManager.removeUpdates(this);
+    }
+
+
+    private String getCity(LocationInfo locationInfo) {
+        List<Address> result = null;
+        String res = "";
+        try {
+            if (locationInfo != null) {
+                Geocoder gc = new Geocoder(this, Locale.getDefault());
+                result = gc.getFromLocation(locationInfo.getLat(),
+                        locationInfo.getLon(), 1);
+                Log.i(msg, "获取地址信息："+result.toString());
+                res = result.get(0).getLocality();
+                Log.i(msg, "城市：" + res);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public class WeatherReceiver extends BroadcastReceiver {
