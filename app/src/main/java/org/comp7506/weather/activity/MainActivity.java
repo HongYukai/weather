@@ -195,7 +195,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         locationInfo.setLat(location.getLatitude());
         locationInfo.setLon(location.getLongitude());
 //        locationInfo.setCity(getCity(locationInfo));
-        locationInfo.setCity("香港");
+//        locationInfo.setCity("Beijing");
         initCurrentWeather(locationInfo);
         // 停止位置更新
         locationManager.removeUpdates(this);

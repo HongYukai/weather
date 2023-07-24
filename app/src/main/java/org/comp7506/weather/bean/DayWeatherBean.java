@@ -10,9 +10,6 @@ public class DayWeatherBean {
     @SerializedName("date")
     private String DATE;
 
-    @SerializedName("wea")
-    private String WEATHER;
-
     @SerializedName("wea_img")
     private String WEATHER_IMG;
 
@@ -36,14 +33,6 @@ public class DayWeatherBean {
 
     public void setDATE(String DATE) {
         this.DATE = DATE;
-    }
-
-    public String getWEATHER() {
-        return WEATHER;
-    }
-
-    public void setWEATHER(String WEATHER) {
-        this.WEATHER = WEATHER;
     }
 
     public String getWEATHER_IMG() {
@@ -75,7 +64,6 @@ public class DayWeatherBean {
         return "DayWeatherBean{" +
                 "DAY='" + DAY + '\'' +
                 ", DATE='" + DATE + '\'' +
-                ", WEATHER='" + WEATHER + '\'' +
                 ", WEATHER_IMG='" + WEATHER_IMG + '\'' +
                 ", HEIGHT_TEMP='" + HEIGHT_TEMP + '\'' +
                 ", LOWEST_TEMP='" + LOWEST_TEMP + '\'' +

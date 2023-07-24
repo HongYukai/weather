@@ -83,6 +83,7 @@ public class WeatherInquiryService extends IntentService {
                 encodedUrl = url + "&city=" +city;
             }
             // 创建 URL 对象
+            System.out.println(encodedUrl);
             java.net.URL apiUrl = new URL(encodedUrl);
 
             // 打开连接
@@ -91,9 +92,11 @@ public class WeatherInquiryService extends IntentService {
             // 设置请求方法为 GET
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(TIMEOUT);
+            System.out.println("already get");
 
             // 发起请求
             int responseCode = connection.getResponseCode();
+            System.out.println(responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 // 请求成功，读取响应内容
@@ -114,8 +117,10 @@ public class WeatherInquiryService extends IntentService {
                 Log.d(msg, jsonResponse.toString());
 
                 WeatherInfo weatherInfo = new WeatherInfo();
+                System.out.println("weatherInfo");
 
                 //current开始
+                System.out.println(CURRENT_WEATHER.equalsIgnoreCase(flag));
                 if(CURRENT_WEATHER.equalsIgnoreCase(flag)) {
                     // 提取需要的数据,这里需要修改 丢失了湿度和wind的数据在“main“和”wind“
                     JSONArray weather = jsonResponse.getJSONArray("weather");
@@ -139,12 +144,12 @@ public class WeatherInquiryService extends IntentService {
                     for (int i = 0; i < data.length(); i++) {
                         DayWeatherBean dayweather = new DayWeatherBean();
                         JSONObject item = data.getJSONObject(i);
-                        String day = item.getString("day");
+//                        String day = item.getString("day");
                         String date= item.getString("date");
                         String weaImg = item.getString("wea_img");
-                        String tempH = item.getString("wea1");
-                        String tempL = item.getString("wea1");
-                        dayweather.setDAY(day);
+                        String tempH = item.getString("tem_day");
+                        String tempL = item.getString("tem_night");
+//                        dayweather.setDAY(day);
                         dayweather.setDATE(date);
                         dayweather.setWEATHER_IMG(weaImg);
                         dayweather.setHEIGHT_TEMP(tempH);
@@ -170,8 +175,6 @@ public class WeatherInquiryService extends IntentService {
                 intent.putExtras(bundle);
 
                 sendBroadcast(intent);
-
-
 
             } else {
                 // 请求失败，输出错误信息
