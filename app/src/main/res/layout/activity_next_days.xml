@@ -5,51 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
-        android:layout_width="130dp"
+        android:id="@+id/l"
+        android:layout_width="139dp"
         android:layout_height="90dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <TextView
             android:id="@+id/date"
-            android:translationX="20dp"
-            android:translationY="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:translationX="20dp"
+            android:translationY="25dp" />
 
         <TextView
             android:id="@+id/day"
-            android:translationX="20dp"
-            android:translationY="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/material_blue"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:translationX="20dp"
+            android:translationY="25dp" />
 
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/r"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
         <ImageView
             android:id="@+id/wea_img"
             android:layout_width="130dp"
             android:layout_height="90dp"
-            android:scaleType="centerCrop"
             android:layout_toRightOf="@+id/day"
-            tools:ignore="NotSibling" />;
-            />
+            android:scaleType="centerCrop"
+            tools:ignore="NotSibling" />
     </RelativeLayout>
 
-    <TextView android:id = "@+id/temp_range"
+    <TextView
+        android:id="@+id/temp_range"
         android:translationX="20dp"
-        android:translationY="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:translationY="30dp" />
+
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progressBar2"-->
+<!--        style="@android:style/Widget.ProgressBar.Small"-->
+<!--        android:layout_width="99dp"-->
+<!--        android:layout_height="59dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        />-->
 
 
 

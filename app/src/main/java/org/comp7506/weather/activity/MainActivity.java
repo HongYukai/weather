@@ -17,7 +17,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -56,6 +58,10 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     private MaterialCardView card;
 
+    private ProgressBar progressBar;
+
+    private ImageView imageView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +89,10 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         filter.addAction(this.getString(R.string.current_weather));
 
         this.registerReceiver(weatherReceiver, filter);
+
+        progressBar = findViewById(R.id.progressBar);
+
+        imageView = findViewById(R.id.imageView2);
 
         text = (TextView) findViewById(R.id.description_text_view);
 
@@ -235,12 +245,12 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             nextWeather(locationInfo);
         }
 
-//        if (v.getId() == R.id.todayMaterialCard){
-//            System.out.println("Main layout click works well");
-//            Intent intent = new Intent(getBaseContext(), HourlyWeather.class);
-//            hourlyWeather(locationInfo);
-//            startActivity(intent);
-//        }
+        if (v.getId() == R.id.todayMaterialCard){
+            System.out.println("Main layout click works well");
+            Intent intent = new Intent(getBaseContext(), HourlyWeather.class);
+            hourlyWeather(locationInfo);
+            startActivity(intent);
+        }
         return true;
     }
 
@@ -277,6 +287,8 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         @Override
         public void onReceive(Context context, Intent intent) {
             final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
+            progressBar.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.VISIBLE);
             text.setText(weatherInfo.getMain());
         }
     }

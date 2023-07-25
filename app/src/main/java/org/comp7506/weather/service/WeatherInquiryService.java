@@ -38,6 +38,8 @@ public class WeatherInquiryService extends IntentService {
 
     private static final String CURRENT_URL = "https://api.openweathermap.org/data/2.5/weather";
 
+    private static final String HU = "https://pro.openweathermap.org/data/2.5/forecast/hourly";
+
     private static final String NEXT_WEEK_URL = "https://www.tianqiapi.com/api?version=v1&appid=36646344&appsecret=c1lgQbP9";
 //    private static final String NEXT_WEEK_URL = "https://devapi.qweather.com/v7/weather/7d?";
     private static final String KEY = "18b5cb7b53994bff9296aa3195f38d45";

@@ -9,6 +9,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -23,16 +27,35 @@ import java.util.Map;
 public class NextDaysActivity extends ListActivity {
 
     ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+    Map<String, Object> map = new HashMap<String, Object>();
 
     public final String WEATHER_KEY = "nwk";
 
     private WeatherReceiver weatherReceiver;
     int count = 0;
 
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        setContentView(R.layout.activity_next_days);
+
+//        Intent intent = this.getIntent();
+
+//        ArrayList<String> date = intent.getStringArrayListExtra("date");
+//        ArrayList<String> day = intent.getStringArrayListExtra("day");
+//        ArrayList<String> tempH = intent.getStringArrayListExtra("tempH");
+//        ArrayList<String> tempL = intent.getStringArrayListExtra("tempL");
+//        for(int i = 0; i < date.size(); i++){
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put("date", date.get(i));
+//            map.put("day", day.get(i));
+//            map.put("tempH", tempH.get(i));
+//            map.put("tempL", tempL.get(i));
+//            list.add(map);
+//        }
 
         weatherReceiver = new WeatherReceiver();
 
@@ -62,10 +85,10 @@ public class NextDaysActivity extends ListActivity {
 //                new String[]{"date", "day", "wea_img", "highest_temp", "lowest_temp"},
 //                new int[]{R.id.date, R.id.day, R.id.wea_img, R.id.highest_temp, R.id.lowest_temp});
 
-//        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.activity_next_days,
-//                new String[]{"date", "day", "tempH", "tempL"},
-//                new int[]{R.id.date, R.id.day, R.id.highest_temp, R.id.lowest_temp});
-//        setListAdapter(adapter);
+
+
+        System.out.println("print out  map list: " + list.toString());
+
     }
 
     public class WeatherReceiver extends BroadcastReceiver {
@@ -73,6 +96,7 @@ public class NextDaysActivity extends ListActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(count < 1) {
+//                progressBar.setVisibility(View.GONE);
                 final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
                 /** TODO: your job **/
                 ArrayList<DayWeatherBean> weatherArray = weatherInfo.getNEXT_DAYS_ARRAY();
