@@ -1,8 +1,10 @@
 package org.comp7506.weather.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -62,6 +65,8 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     private ImageView imageView;
 
+    private TextView citySelector;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +108,44 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         card = (MaterialCardView) findViewById(R.id.todayMaterialCard);
 
         card.setOnTouchListener(this);
+
+        citySelector = findViewById(R.id.select_city);
+        citySelector.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                showInputDialog();
+                return false;
+            }
+        });
+    }
+
+    private void showInputDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Type your city name");
+
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+        builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String userInput = input.getText().toString();
+                LocationInfo locationInfo = new LocationInfo();
+                locationInfo.setCity(userInput);
+                initCurrentWeather(locationInfo);
+                citySelector.setText(userInput + "    🔍");
+            }
+        });
+
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /** 当活动即将可见时调用 */
@@ -139,15 +182,15 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
     /** 异步请求current weather，返回的结果由WeatherReceiver处理 */
     void initCurrentWeather(LocationInfo locationInfo) {
 
+        progressBar.setVisibility(View.VISIBLE);
+
+        imageView.setVisibility(View.INVISIBLE);
+
         Intent intent = new Intent(this, WeatherInquiryService.class);
 
         intent.setAction(this.getString(R.string.current_weather));
 
         Bundle bundle = new Bundle();
-
-        locationInfo.setLat(22.3);
-
-        locationInfo.setLon(114.0);
 
         bundle.putSerializable(LOCATION_KEY, locationInfo);
 

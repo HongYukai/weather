@@ -95,9 +95,9 @@ public class WeatherInquiryService extends IntentService {
             String encodedUrl = "";
             if(CURRENT_WEATHER.equalsIgnoreCase(flag)) {
                 // 构建带参数的 URL，可能需要根据不同的请求填充参数，这里只做了current的
-                encodedUrl = url + "?lat=" + URLEncoder.encode(lat, "UTF-8") +
+                encodedUrl = url + "?q=" + locationInfo.getCity() + /** "?lat=" + URLEncoder.encode(lat, "UTF-8") +
                         "&lon=" + URLEncoder.encode(lon, "UTF-8") + "&exclude=minutely" +
-                        "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
+                        **/ "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
             }else if(NEXT_WEEK_WEATHER.equalsIgnoreCase(flag)){
                 encodedUrl = url + "&city=" +city;
 //                encodeUrl = url + "&location" =
