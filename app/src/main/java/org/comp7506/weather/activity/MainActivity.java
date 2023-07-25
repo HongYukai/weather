@@ -260,13 +260,21 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
             ArrayList<String> date = new ArrayList<>();
             ArrayList<String> day = new ArrayList<>();
+            ArrayList<String> tempL = new ArrayList<>();
+            ArrayList<String> tempH = new ArrayList<>();
             date.add("2023-07-24");
             day.add("Monday");
             date.add("2023-07-25");
             day.add("Tuesday");
+            tempH.add("37degree");
+            tempL.add("26degree");
+            tempH.add("37degree");
+            tempL.add("26degree");
 
             intent.putStringArrayListExtra("date", date);
             intent.putStringArrayListExtra("day", day);
+            intent.putStringArrayListExtra("tempH", tempH);
+            intent.putStringArrayListExtra("tempL", tempL);
             startActivity(intent);
             nextWeather(locationInfo);
         }

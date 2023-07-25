@@ -207,19 +207,19 @@ public class WeatherInquiryService extends IntentService {
 
                     sendBroadcast(intent);
                 }
-
-                if(HOURLY_WEATHER.equalsIgnoreCase(flag)){
-                    JSONArray data = jsonResponse.getJSONArray("hourly");
+                System.out.println(response.toString());
+                if(HOURLY_WEATHER.equalsIgnoreCase(flag)) {
+//                    JSONArray data = jsonResponse.getJSONArray("hourly");
                     ArrayList<Map<String, String>> hourlyList = new ArrayList<>();
-                    for (int i = 0; i < data.length(); i++) {
-                        Map<String, String> hourInfo = new HashMap<>();
-                        JSONObject item = data.getJSONObject(i);
-                        String time = item.getString("fxTime");
-                        String temp = item.getString("temp");
-                        hourInfo.put("time", time);
-                        hourInfo.put("temp", temp);
-                        hourlyList.add(hourInfo);
-                    }
+//                    for (int i = 0; i < data.length(); i++) {
+//                        Map<String, String> hourInfo = new HashMap<>();
+//                        JSONObject item = data.getJSONObject(i);
+//                        String time = item.getString("fxTime");
+//                        String temp = item.getString("temp");
+//                        hourInfo.put("time", time);
+//                        hourInfo.put("temp", temp);
+//                        hourlyList.add(hourInfo);
+//                }
 
                     weatherInfo.setHOURLY_ARRAY(hourlyList);
 

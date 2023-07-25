@@ -1,6 +1,9 @@
 package org.comp7506.weather.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -13,7 +16,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import org.comp7506.weather.R;
+import org.comp7506.weather.model.CurveView;
 import org.comp7506.weather.model.WeatherInfo;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class HourlyWeather extends Activity {
 
@@ -21,7 +29,9 @@ public class HourlyWeather extends Activity {
 
     private HourlyWeather.WeatherReceiver weatherReceiver;
 
-    private TextView text;
+    private TextView DAY;
+
+    private RecyclerView HourlyWeather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,13 @@ public class HourlyWeather extends Activity {
 //        setListAdapter(adapter);
 //
 //        System.out.println("print out  map list: " + list.toString());
+
+//        CurveView curveView = findViewById(R.id.curveView);
+//        List<String> xList = Arrays.asList("1","2","3","4","5","6","7", "8","9", "10", "1","2","3","4","5","6","7", "8","9", "10", "1","2","3","4");
+//        List<String> yList = Arrays.asList("0","50","55","51","53","56","59", "0","50","55","51","53","56","59","0","50","55","51","53","56","59", "0","50","55");
+//        List<String> xList = Arrays.asList("1","2","3","4","5","6","7");
+//        List<String> yList = Arrays.asList("0","50","55","51","53","56","59");
+//        curveView.setData(xList, yList);
     }
 
 
@@ -54,6 +71,23 @@ public class HourlyWeather extends Activity {
         public void onReceive(Context context, Intent intent) {
             final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
             Log.d("test_Hourly", weatherInfo.toString());
+            DAY.setText("Friday");
+            for(Map<String, String> eachHour: weatherInfo.getHOURLY_ARRAY()){
+                String time = eachHour.get("time");
+                String temp = eachHour.get("temp");
+
+                HourlyWeather = (RecyclerView) findViewById(R.id.hour_view);
+                HourlyWeather.setHasFixedSize(true);
+
+//                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+//                layoutManager.setAutoMeasureEnabled(true);
+//                HourlyWeather.setLayoutManager(layoutManager);
+//
+//                RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+//                HourlyWeather.addItemDecoration(itemDecoration);
+            }
+
+
         }
     }
 }

@@ -1,9 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background= "@color/material_blue"
+    android:orientation="vertical"
     tools:context=".activity.HourlyWeather">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/day"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textColor="@color/white"
+        android:textSize="50sp" />
+
+    <ImageView
+        android:id="@+id/wea_img"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:translationX="130dp"
+        android:layout_below="@+id/day"
+        android:layout_marginStart="@+id/day"
+        android:layout_marginTop="@+id/day"
+        android:layout_marginEnd="@+id/day"
+        android:layout_marginBottom="@+id/day"
+        android:scaleType="centerCrop" />;
+
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/temp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:translationX="130dp"
+            android:textColor="@color/white"
+            android:textSize="60sp" />
+
+        <TextView
+            android:id="@+id/tempL"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            android:layout_toLeftOf="@+id/temp"
+            tools:ignore="NotSibling" />
+        <TextView
+            android:id="@+id/tempH"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            android:layout_toRightOf="@+id/temp"/>
+
+    </RelativeLayout>
+
+<!--    <org.comp7506.weather.model.CurveView-->
+<!--        android:id="@+id/curveView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hour_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
+
+</android.widget.LinearLayout>

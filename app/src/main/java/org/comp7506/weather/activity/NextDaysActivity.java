@@ -38,13 +38,16 @@ public class NextDaysActivity extends ListActivity {
 
         ArrayList<String> date = intent.getStringArrayListExtra("date");
         ArrayList<String> day = intent.getStringArrayListExtra("day");
-
-//        for(int i = 0; i < date.size(); i++){
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("date", date.get(i));
-//            map.put("day", day.get(i));
-//            list.add(map);
-//        }
+        ArrayList<String> tempH = intent.getStringArrayListExtra("tempH");
+        ArrayList<String> tempL = intent.getStringArrayListExtra("tempL");
+        for(int i = 0; i < date.size(); i++){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("date", date.get(i));
+            map.put("day", day.get(i));
+            map.put("tempH", tempH.get(i));
+            map.put("tempL", tempL.get(i));
+            list.add(map);
+        }
 
         weatherReceiver = new WeatherReceiver();
 
@@ -56,10 +59,13 @@ public class NextDaysActivity extends ListActivity {
 
         System.out.println("print out  map list: " + list.toString());
 
-        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.activity_next_days,
-                new String[]{"date", "day", "wea_img", "highest_temp", "lowest_temp"},
-                new int[]{R.id.date, R.id.day, R.id.wea_img, R.id.highest_temp, R.id.lowest_temp});
+//        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.activity_next_days,
+//                new String[]{"date", "day", "wea_img", "highest_temp", "lowest_temp"},
+//                new int[]{R.id.date, R.id.day, R.id.wea_img, R.id.highest_temp, R.id.lowest_temp});
 
+        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.activity_next_days,
+                new String[]{"date", "day", "tempH", "tempL"},
+                new int[]{R.id.date, R.id.day, R.id.highest_temp, R.id.lowest_temp});
         setListAdapter(adapter);
 
         System.out.println("print out  map list: " + list.toString());
@@ -80,8 +86,8 @@ public class NextDaysActivity extends ListActivity {
                 map.put("day", dayWeather.getDAY());
                 map.put("date", dayWeather.getDATE());
                 map.put("wea_img", dayWeather.getWEATHER_IMG());
-                map.put("higest_temp", dayWeather.getHEIGHT_TEMP());
-                map.put("lowest_temo", dayWeather.getLOWEST_TEMP());
+                map.put("tempH", dayWeather.getHEIGHT_TEMP());
+                map.put("tempL", dayWeather.getLOWEST_TEMP());
                 list.add(map);
             }
 
