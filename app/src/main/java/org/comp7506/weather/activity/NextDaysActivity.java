@@ -109,7 +109,6 @@ public class NextDaysActivity extends ListActivity {
                     list.add(map);
                 }
                 count++;
-
                 SimpleAdapter adapter = new SimpleAdapter(context, list, R.layout.activity_next_days,
                         new String[]{"date", "day", "tempRange", "tempL"},
                         new int[]{R.id.date, R.id.day, R.id.temp_range});

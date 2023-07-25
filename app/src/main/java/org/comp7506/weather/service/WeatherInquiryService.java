@@ -42,14 +42,14 @@ public class WeatherInquiryService extends IntentService {
 
     private static final String NEXT_WEEK_URL = "https://www.tianqiapi.com/api?version=v1&appid=36646344&appsecret=c1lgQbP9";
 //    private static final String NEXT_WEEK_URL = "https://devapi.qweather.com/v7/weather/7d?";
-    private static final String KEY = "18b5cb7b53994bff9296aa3195f38d45";
+//    private static final String KEY = "18b5cb7b53994bff9296aa3195f38d45";
     private static final String HOURLY_URL = "https://devapi.qweather.com/v7/grid-weather/24h?";
-
+    private static final String KEY = "6332640fa6044661b83381f8a3ad5812";
 
     private static final String CURRENT_WEATHER = "CURRENT_WEATHER";
     private static final String NEXT_WEEK_WEATHER = "NEXT 7 DAYS";
 
-    private static final String HOURLY_WEATHER = "HOURLY_WEATHER";
+    private static final String HOURLY_WEATHER = "HOURLY WEATHER";
     private static final int TIMEOUT = 5000;
     private static final Map<String, String> map = new HashMap<String, String>();
 
@@ -211,17 +211,20 @@ public class WeatherInquiryService extends IntentService {
                 }
                 System.out.println(response.toString());
                 if(HOURLY_WEATHER.equalsIgnoreCase(flag)) {
-//                    JSONArray data = jsonResponse.getJSONArray("hourly");
+                    String date = jsonResponse.getString("updateTime").substring(0,10);
+                    JSONArray data = jsonResponse.getJSONArray("hourly");
                     ArrayList<Map<String, String>> hourlyList = new ArrayList<>();
-//                    for (int i = 0; i < data.length(); i++) {
-//                        Map<String, String> hourInfo = new HashMap<>();
-//                        JSONObject item = data.getJSONObject(i);
-//                        String time = item.getString("fxTime");
-//                        String temp = item.getString("temp");
-//                        hourInfo.put("time", time);
-//                        hourInfo.put("temp", temp);
-//                        hourlyList.add(hourInfo);
-//                }
+                    for (int i = 0; i < data.length(); i++) {
+                        Map<String, String> hourInfo = new HashMap<>();
+                        JSONObject item = data.getJSONObject(i);
+                        date = item.getString("fxTime").substring(0,10);
+                        String time = item.getString("fxTime").substring(11);
+                        String temp = item.getString("temp");
+                        hourInfo.put("time", time);
+                        hourInfo.put("temp", temp);
+                        hourlyList.add(hourInfo);
+                }
+                    weatherInfo.setMain(date);
 
                     weatherInfo.setHOURLY_ARRAY(hourlyList);
 
