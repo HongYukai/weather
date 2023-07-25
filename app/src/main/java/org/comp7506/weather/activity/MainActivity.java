@@ -14,12 +14,18 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import org.comp7506.weather.R;
 import org.comp7506.weather.model.LocationInfo;
@@ -29,8 +35,9 @@ import org.comp7506.weather.service.WeatherInquiryService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 
-public class MainActivity extends Activity implements LocationListener, View.OnClickListener {
+public class MainActivity extends Activity implements LocationListener, View.OnClickListener, View.OnTouchListener {
     String msg = "Android : ";
 
     public static String LOCATION_KEY = "lklklk";
@@ -46,6 +53,8 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
     private TextView text;
 
     private Button nextDaysBtn;
+
+    private MaterialCardView card;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +88,11 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
         nextDaysBtn = (Button) findViewById(R.id.next_days_button);
 
-        nextDaysBtn.setOnClickListener(this);
+        nextDaysBtn.setOnTouchListener(this);
+
+        card = (MaterialCardView) findViewById(R.id.todayMaterialCard);
+
+        card.setOnTouchListener(this);
     }
 
     /** 当活动即将可见时调用 */
@@ -136,28 +149,28 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
     /** 当点击按钮可得到接下来七天的信息*/
     @Override
     public void onClick(View v){
-        if (v.getId() == R.id.next_days_button){
-            System.out.println("next days button works well");
-            Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
-            ArrayList<String> date = new ArrayList<>();
-            ArrayList<String> day = new ArrayList<>();
-            date.add("2023-07-24");
-            day.add("Monday");
-            date.add("2023-07-25");
-            day.add("Tuesday");
-
-            intent.putStringArrayListExtra("date", date);
-            intent.putStringArrayListExtra("day", day);
-            startActivity(intent);
-            nextWeather(locationInfo);
-        }
-
-        if (v.getId() == R.id.contentMainLayout){
-            System.out.println("Main layout click works well");
-            Intent intent = new Intent(getBaseContext(), HourlyWeather.class);
-            hourlyWeather(locationInfo);
-            startActivity(intent);
-        }
+//        if (v.getId() == R.id.next_days_button){
+//            System.out.println("next days button works well");
+//            Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
+//            ArrayList<String> date = new ArrayList<>();
+//            ArrayList<String> day = new ArrayList<>();
+//            date.add("2023-07-24");
+//            day.add("Monday");
+//            date.add("2023-07-25");
+//            day.add("Tuesday");
+//
+//            intent.putStringArrayListExtra("date", date);
+//            intent.putStringArrayListExtra("day", day);
+//            startActivity(intent);
+//            nextWeather(locationInfo);
+//        }
+//
+//        if (v.getId() == R.id.contentMainLayout){
+//            System.out.println("Main layout click works well");
+//            Intent intent = new Intent(getBaseContext(), HourlyWeather.class);
+//            hourlyWeather(locationInfo);
+//            startActivity(intent);
+//        }
     }
 
     private void hourlyWeather(LocationInfo locationInfo) {
@@ -237,6 +250,34 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             e.printStackTrace();
         }
         return res;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent motionEvent) {
+        Log.d(msg, "1");
+        if (v.getId() == R.id.next_days_button){
+            System.out.println("next days button works well");
+            Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
+            ArrayList<String> date = new ArrayList<>();
+            ArrayList<String> day = new ArrayList<>();
+            date.add("2023-07-24");
+            day.add("Monday");
+            date.add("2023-07-25");
+            day.add("Tuesday");
+
+            intent.putStringArrayListExtra("date", date);
+            intent.putStringArrayListExtra("day", day);
+            startActivity(intent);
+            nextWeather(locationInfo);
+        }
+
+        if (v.getId() == R.id.todayMaterialCard){
+            System.out.println("Main layout click works well");
+            Intent intent = new Intent(getBaseContext(), HourlyWeather.class);
+            hourlyWeather(locationInfo);
+            startActivity(intent);
+        }
+        return true;
     }
 
     public class WeatherReceiver extends BroadcastReceiver {

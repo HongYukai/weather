@@ -2,6 +2,7 @@ package org.comp7506.weather.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 import org.comp7506.weather.R;
 import org.comp7506.weather.model.WeatherInfo;
 
-public class HourlyWeather extends AppCompatActivity {
+public class HourlyWeather extends Activity {
 
     public final String WEATHER_KEY = "nwk";
 
