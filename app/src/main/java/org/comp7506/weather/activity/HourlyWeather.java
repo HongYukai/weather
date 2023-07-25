@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,8 +31,13 @@ public class HourlyWeather extends Activity {
     private HourlyWeather.WeatherReceiver weatherReceiver;
 
     private TextView DAY;
+    private TextView TempH;
+    private TextView TempL;
 
     private RecyclerView HourlyWeather;
+
+    private int  LowestTemp = Integer.MAX_VALUE;
+    private int  HighestTemp = Integer.MIN_VALUE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +76,20 @@ public class HourlyWeather extends Activity {
 
     public class WeatherReceiver extends BroadcastReceiver {
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onReceive(Context context, Intent intent) {
             final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
             Log.d("test_Hourly", weatherInfo.toString());
-            DAY.setText("Friday");
+            DAY.setText(weatherInfo.getMain());
+
             for(Map<String, String> eachHour: weatherInfo.getHOURLY_ARRAY()){
                 String time = eachHour.get("time");
+
                 String temp = eachHour.get("temp");
+                int tempInt  = Integer.parseInt(temp);
+                LowestTemp = Math.min(tempInt, LowestTemp);
+                HighestTemp = Math.max(tempInt, HighestTemp);
 
                 HourlyWeather = (RecyclerView) findViewById(R.id.hour_view);
                 HourlyWeather.setHasFixedSize(true);
@@ -89,6 +101,12 @@ public class HourlyWeather extends Activity {
 //                RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 //                HourlyWeather.addItemDecoration(itemDecoration);
             }
+
+            TempH = findViewById(R.id.tempH);
+            TempH.setText(Integer.toString(HighestTemp) + "℃");
+
+            TempL = findViewById(R.id.tempL);
+            TempL.setText(Integer.toString(LowestTemp) + "℃");
 
 
         }
