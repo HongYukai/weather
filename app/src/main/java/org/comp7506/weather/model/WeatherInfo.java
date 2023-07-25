@@ -66,8 +66,8 @@ public class WeatherInfo implements Serializable {
                 "temp=" + temp +
                 ", main='" + main + '\'' +
                 ", description='" + description + '\'' +
-                ", DATA_ARRAY=" + NEXT_DAYS_ARRAY +
+                ", NEXT_DAYS_ARRAY=" + NEXT_DAYS_ARRAY +
+                ", HOURLY_ARRAY=" + HOURLY_ARRAY +
                 '}';
     }
-
 }

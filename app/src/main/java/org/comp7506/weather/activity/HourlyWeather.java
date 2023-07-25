@@ -62,7 +62,9 @@ public class HourlyWeather extends Activity {
 //        List<String> xList = Arrays.asList("1","2","3","4","5","6","7");
 //        List<String> yList = Arrays.asList("0","50","55","51","53","56","59");
 //        curveView.setData(xList, yList);
+
         DAY = findViewById(R.id.day);
+//        DAY.setText("Friday");
     }
 
 

@@ -41,7 +41,7 @@ public class WeatherInquiryService extends IntentService {
     private static final String NEXT_WEEK_URL = "https://www.tianqiapi.com/api?version=v1&appid=36646344&appsecret=c1lgQbP9";
 //    private static final String NEXT_WEEK_URL = "https://devapi.qweather.com/v7/weather/7d?";
     private static final String KEY = "18b5cb7b53994bff9296aa3195f38d45";
-    private static final String HOURLY_URL = "https://api.qweather.com/v7/grid-weather/24h?";
+    private static final String HOURLY_URL = "https://devapi.qweather.com/v7/grid-weather/24h?";
 
 
     private static final String CURRENT_WEATHER = "CURRENT_WEATHER";

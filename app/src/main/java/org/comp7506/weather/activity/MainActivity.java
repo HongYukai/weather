@@ -176,7 +176,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
     private void hourlyWeather(LocationInfo locationInfo) {
         Intent intent = new Intent(this, WeatherInquiryService.class);
 
-        intent.setAction("HOURLY_WEATHER");
+        intent.setAction(this.getString(R.string.hourly_weather));
 
         Bundle bundle = new Bundle();
 
@@ -254,7 +254,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
-        Log.d(msg, "1");
+        Log.d(msg, "onClick");
         if (v.getId() == R.id.next_days_button){
             System.out.println("next days button works well");
             Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);

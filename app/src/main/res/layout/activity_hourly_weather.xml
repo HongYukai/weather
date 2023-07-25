@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:textColor="@color/white"
+        android:gravity="center"
         android:textSize="50sp" />
 
     <ImageView
@@ -20,6 +21,7 @@
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:translationX="130dp"
+        android:gravity="center"
         android:layout_below="@+id/day"
         android:scaleType="centerCrop" />
 
@@ -34,9 +36,10 @@
             android:id="@+id/temp"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:translationX="130dp"
+            android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="60sp" />
+            android:textSize="60sp"
+            android:translationX="130dp" />
 
         <TextView
             android:id="@+id/tempL"
@@ -44,6 +47,7 @@
             android:layout_height="100dp"
             android:textColor="@color/white"
             android:textSize="60sp"
+            android:gravity="center"
             android:layout_toLeftOf="@+id/temp"
             tools:ignore="NotSibling" />
         <TextView
@@ -52,6 +56,7 @@
             android:layout_height="100dp"
             android:textColor="@color/white"
             android:textSize="60sp"
+            android:gravity="center"
             android:layout_toRightOf="@+id/temp"/>
 
     </RelativeLayout>

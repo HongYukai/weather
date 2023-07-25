@@ -4,7 +4,6 @@
     <string name="url">https://api.openweathermap.org/data/3.0/onecall</string>
     <string name="current_weather">CURRENT_WEATHER</string>
     <string name="next_week_weather">NEXT 7 DAYS</string>
-    <string name="hourly_weather">HOURLY_WEATHER</string>
     <string name="cancel_label">Cancel</string>
     <string name="store_label">Store</string>
     <string name="license_title">License</string>
@@ -105,6 +104,7 @@
     <string name="ok_label">OK</string>
     <string name="night_mode_label">Night Mode</string>
     <string name="next_7_days">Next 7 days</string>
+    <string name="hourly_weather">HOURLY WEATHER</string>
 
 
     <string-array name="cities">
