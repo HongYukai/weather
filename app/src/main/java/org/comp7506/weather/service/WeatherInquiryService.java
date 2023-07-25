@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import org.comp7506.weather.R;
+import org.comp7506.weather.activity.HourlyWeather;
 import org.comp7506.weather.activity.MainActivity;
 import org.comp7506.weather.activity.NextDaysActivity;
 import org.comp7506.weather.bean.DayWeatherBean;
@@ -24,6 +25,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -35,15 +38,18 @@ public class WeatherInquiryService extends IntentService {
 
     private static final String CURRENT_URL = "https://api.openweathermap.org/data/2.5/weather";
 
-//    private static final String NEXT_WEEK_URL = "https://devapi.qweather.com/v7/weather/7d";
-    private static final String NEXT_WEEK_URL = "https://www.yiketianqi.com/free/week?unescape=1&appid=63263372&appsecret=86eRO3z7";
-    private static final String NEXT_KEY = "18b5cb7b53994bff9296aa3195f38d45";
+    private static final String NEXT_WEEK_URL = "https://www.tianqiapi.com/api?version=v1&appid=36646344&appsecret=c1lgQbP9";
+//    private static final String NEXT_WEEK_URL = "https://devapi.qweather.com/v7/weather/7d?";
+    private static final String KEY = "18b5cb7b53994bff9296aa3195f38d45";
+    private static final String HOURLY_URL = "https://api.qweather.com/v7/grid-weather/24h?";
+
 
     private static final String CURRENT_WEATHER = "CURRENT_WEATHER";
     private static final String NEXT_WEEK_WEATHER = "NEXT 7 DAYS";
-    private static final int TIMEOUT = 5000;
 
-    private static final String[] WEEKDAYS = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    private static final String HOURLY_WEATHER = "HOURLY_WEATHER";
+    private static final int TIMEOUT = 5000;
+    private static final Map<String, String> map = new HashMap<String, String>();
 
     public WeatherInquiryService() {
         super("WeatherInquiryService");
@@ -60,6 +66,8 @@ public class WeatherInquiryService extends IntentService {
                 //TODO: 增加hourly weather, halfmonth weather
             } else if (NEXT_WEEK_WEATHER.equalsIgnoreCase(action)){
                 makeRequest(locationInfo, NEXT_WEEK_URL, NEXT_WEEK_WEATHER);
+            } else{
+                makeRequest(locationInfo, HOURLY_URL, HOURLY_WEATHER);
             }
         }
     }
@@ -73,6 +81,14 @@ public class WeatherInquiryService extends IntentService {
         String city = String.valueOf(locationInfo.getCity());
         System.out.println("city: " + city);
 
+        map.put("星期一","Monday");
+        map.put("星期二", "Tuesday");
+        map.put("星期三", "Wednesday");
+        map.put("星期四", "Thursday");
+        map.put("星期五", "Friday");
+        map.put("星期六", "Saturday");
+        map.put("星期天", "Sunday");
+
         try {
             String encodedUrl = "";
             if(CURRENT_WEATHER.equalsIgnoreCase(flag)) {
@@ -82,6 +98,9 @@ public class WeatherInquiryService extends IntentService {
                         "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
             }else if(NEXT_WEEK_WEATHER.equalsIgnoreCase(flag)){
                 encodedUrl = url + "&city=" +city;
+//                encodeUrl = url + "&location" =
+            }else{
+                encodedUrl = url + "&location=" + lon + "," + lat + "&key=" + KEY;
             }
             // 创建 URL 对象
             System.out.println(encodedUrl);
@@ -159,12 +178,12 @@ public class WeatherInquiryService extends IntentService {
                     for (int i = 0; i < data.length(); i++) {
                         DayWeatherBean dayweather = new DayWeatherBean();
                         JSONObject item = data.getJSONObject(i);
-//                        String day = item.getString("day");
+                        String day = item.getString("week");
                         String date= item.getString("date");
                         String weaImg = item.getString("wea_img");
-                        String tempH = item.getString("tem_day");
-                        String tempL = item.getString("tem_night");
-//                        dayweather.setDAY(day);
+                        String tempH = item.getString("tem1");
+                        String tempL = item.getString("tem2");
+                        dayweather.setDAY(map.get(day));
                         dayweather.setDATE(date);
                         dayweather.setWEATHER_IMG(weaImg);
                         dayweather.setHEIGHT_TEMP(tempH);
@@ -172,7 +191,7 @@ public class WeatherInquiryService extends IntentService {
                         weathersList.add(dayweather);
                     }
 
-                    weatherInfo.setDATA_ARRAY(weathersList);
+                    weatherInfo.setNEXT_DAYS_ARRAY(weathersList);
 
                     Log.d(msg, weatherInfo.toString());
 
@@ -187,6 +206,37 @@ public class WeatherInquiryService extends IntentService {
                     intent.putExtras(bundle);
 
                     sendBroadcast(intent);
+                }
+
+                if(HOURLY_WEATHER.equalsIgnoreCase(flag)){
+                    JSONArray data = jsonResponse.getJSONArray("hourly");
+                    ArrayList<Map<String, String>> hourlyList = new ArrayList<>();
+                    for (int i = 0; i < data.length(); i++) {
+                        Map<String, String> hourInfo = new HashMap<>();
+                        JSONObject item = data.getJSONObject(i);
+                        String time = item.getString("fxTime");
+                        String temp = item.getString("temp");
+                        hourInfo.put("time", time);
+                        hourInfo.put("temp", temp);
+                        hourlyList.add(hourInfo);
+                    }
+
+                    weatherInfo.setHOURLY_ARRAY(hourlyList);
+
+                    Log.d(msg, weatherInfo.toString());
+
+                    Intent intent = new Intent();
+
+                    intent.setAction(flag);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putSerializable(new NextDaysActivity().WEATHER_KEY, weatherInfo);
+
+                    intent.putExtras(bundle);
+
+                    sendBroadcast(intent);
+
                 }
 
             } else {

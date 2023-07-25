@@ -14,14 +14,10 @@ import android.widget.TextView;
 
 import org.comp7506.weather.R;
 import org.comp7506.weather.bean.DayWeatherBean;
-import org.comp7506.weather.bean.WeatherBean;
-import org.comp7506.weather.model.LocationInfo;
 import org.comp7506.weather.model.WeatherInfo;
-import org.comp7506.weather.service.WeatherInquiryService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class NextDaysActivity extends ListActivity {
@@ -61,8 +57,8 @@ public class NextDaysActivity extends ListActivity {
         System.out.println("print out  map list: " + list.toString());
 
         SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.activity_next_days,
-                new String[]{"date", "wea_img", "highest_temp", "lowest_temp"},
-                new int[]{R.id.date, R.id.wea_img, R.id.highest_temp, R.id.lowest_temp});
+                new String[]{"date", "day", "wea_img", "highest_temp", "lowest_temp"},
+                new int[]{R.id.date, R.id.day, R.id.wea_img, R.id.highest_temp, R.id.lowest_temp});
 
         setListAdapter(adapter);
 
@@ -79,8 +75,9 @@ public class NextDaysActivity extends ListActivity {
         public void onReceive(Context context, Intent intent) {
             final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
             /** TODO: your job **/
-            ArrayList<DayWeatherBean> weatherArray = weatherInfo.getDATA_ARRAY();
+            ArrayList<DayWeatherBean> weatherArray = weatherInfo.getNEXT_DAYS_ARRAY();
             for(DayWeatherBean dayWeather: weatherArray){
+                map.put("day", dayWeather.getDAY());
                 map.put("date", dayWeather.getDATE());
                 map.put("wea_img", dayWeather.getWEATHER_IMG());
                 map.put("higest_temp", dayWeather.getHEIGHT_TEMP());

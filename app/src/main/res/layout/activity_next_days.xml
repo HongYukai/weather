@@ -10,6 +10,12 @@
         android:textColor="@color/black"
         android:textSize="16sp"/>
 
+    <TextView android:id = "@+id/day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/material_blue"
+        android:textSize="16sp"/>
+
     <TextView android:id = "@+id/wea_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

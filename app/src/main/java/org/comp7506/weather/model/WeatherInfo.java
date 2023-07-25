@@ -4,6 +4,7 @@ import org.comp7506.weather.bean.DayWeatherBean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class WeatherInfo implements Serializable {
     private double temp;
@@ -12,11 +13,14 @@ public class WeatherInfo implements Serializable {
 
     private String description;
 
-    private ArrayList<DayWeatherBean> DATA_ARRAY;
+    private ArrayList<DayWeatherBean> NEXT_DAYS_ARRAY;
+
+    private ArrayList<Map<String, String>> HOURLY_ARRAY;
 
     public double getTemp() {
         return temp;
     }
+
 
     public String getMain() {
         return main;
@@ -39,12 +43,20 @@ public class WeatherInfo implements Serializable {
     }
 
 
-    public ArrayList<DayWeatherBean> getDATA_ARRAY() {
-        return DATA_ARRAY;
+    public ArrayList<DayWeatherBean> getNEXT_DAYS_ARRAY() {
+        return NEXT_DAYS_ARRAY;
     }
 
-    public void setDATA_ARRAY(ArrayList<DayWeatherBean> DATA_ARRAY) {
-        this.DATA_ARRAY = DATA_ARRAY;
+    public void setNEXT_DAYS_ARRAY(ArrayList<DayWeatherBean> DATA_ARRAY) {
+        this.NEXT_DAYS_ARRAY = DATA_ARRAY;
+    }
+
+    public ArrayList<Map<String, String>> getHOURLY_ARRAY() {
+        return HOURLY_ARRAY;
+    }
+
+    public void setHOURLY_ARRAY(ArrayList<Map<String, String>> HOURLY_ARRAY) {
+        this.HOURLY_ARRAY = HOURLY_ARRAY;
     }
 
 
@@ -54,7 +66,7 @@ public class WeatherInfo implements Serializable {
                 "temp=" + temp +
                 ", main='" + main + '\'' +
                 ", description='" + description + '\'' +
-                ", DATA_ARRAY=" + DATA_ARRAY +
+                ", DATA_ARRAY=" + NEXT_DAYS_ARRAY +
                 '}';
     }
 
