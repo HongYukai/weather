@@ -7,7 +7,7 @@ public class LocationInfo implements Serializable {
 
     private double lon;
 
-    private String city;
+    private String city = "HongKong";
 
     public double getLat() {
         return lat;
