@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class HourlyWeather extends Activity {
 
-    public final String WEATHER_KEY = "nwk";
+    public final String WEATHER_KEY = "hwk";
 
     private HourlyWeather.WeatherReceiver weatherReceiver;
 
@@ -42,7 +42,7 @@ public class HourlyWeather extends Activity {
 
         IntentFilter filter= new IntentFilter();
 
-        filter.addAction(this.getString(R.string.next_week_weather));
+        filter.addAction(this.getString(R.string.hourly_weather));
 
         this.registerReceiver(weatherReceiver, filter);
 
@@ -62,6 +62,7 @@ public class HourlyWeather extends Activity {
 //        List<String> xList = Arrays.asList("1","2","3","4","5","6","7");
 //        List<String> yList = Arrays.asList("0","50","55","51","53","56","59");
 //        curveView.setData(xList, yList);
+        DAY = findViewById(R.id.day);
     }
 
 

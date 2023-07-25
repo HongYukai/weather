@@ -53,7 +53,7 @@ public class NextDaysActivity extends ListActivity {
 
         IntentFilter filter= new IntentFilter();
 
-        filter.addAction(this.getString(R.string.next_week_weather));
+        filter.addAction(this.getString(R.string.next_7_days));
 
         this.registerReceiver(weatherReceiver, filter);
 

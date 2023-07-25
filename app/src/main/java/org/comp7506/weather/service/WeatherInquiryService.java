@@ -231,7 +231,7 @@ public class WeatherInquiryService extends IntentService {
 
                     Bundle bundle = new Bundle();
 
-                    bundle.putSerializable(new NextDaysActivity().WEATHER_KEY, weatherInfo);
+                    bundle.putSerializable(new HourlyWeather().WEATHER_KEY, weatherInfo);
 
                     intent.putExtras(bundle);
 

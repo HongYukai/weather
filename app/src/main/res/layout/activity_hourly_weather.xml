@@ -21,11 +21,7 @@
         android:layout_height="130dp"
         android:translationX="130dp"
         android:layout_below="@+id/day"
-        android:layout_marginStart="@+id/day"
-        android:layout_marginTop="@+id/day"
-        android:layout_marginEnd="@+id/day"
-        android:layout_marginBottom="@+id/day"
-        android:scaleType="centerCrop" />;
+        android:scaleType="centerCrop" />
 
 
 
