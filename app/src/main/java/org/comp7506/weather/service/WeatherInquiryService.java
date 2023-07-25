@@ -87,7 +87,7 @@ public class WeatherInquiryService extends IntentService {
         map.put("星期四", "Thursday");
         map.put("星期五", "Friday");
         map.put("星期六", "Saturday");
-        map.put("星期天", "Sunday");
+        map.put("星期日", "Sunday");
 
         try {
             String encodedUrl = "";

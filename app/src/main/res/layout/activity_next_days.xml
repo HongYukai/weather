@@ -43,7 +43,7 @@
             />
     </RelativeLayout>
 
-    <TextView android:id = "@+id/lowest_temp"
+    <TextView android:id = "@+id/temp_range"
         android:translationX="20dp"
         android:translationY="30dp"
         android:layout_width="wrap_content"
@@ -51,14 +51,6 @@
         android:textColor="@color/black"
         android:textSize="16sp" />
 
-
-    <TextView android:id = "@+id/highest_temp"
-        android:translationX="20dp"
-        android:translationY="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="16sp"/>
 
 
 <!--    <TextView android:id = "@+id/day"-->

@@ -173,33 +173,6 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 //        }
     }
 
-    private void hourlyWeather(LocationInfo locationInfo) {
-        Intent intent = new Intent(this, WeatherInquiryService.class);
-
-        intent.setAction(this.getString(R.string.hourly_weather));
-
-        Bundle bundle = new Bundle();
-
-        bundle.putSerializable(LOCATION_KEY, locationInfo);
-
-        intent.putExtras(bundle);
-
-        startService(intent);
-    }
-
-    private void nextWeather(LocationInfo locationInfo){
-        Intent intent = new Intent(this, WeatherInquiryService.class);
-
-        intent.setAction(this.getString(R.string.next_7_days));
-
-        Bundle bundle = new Bundle();
-
-        bundle.putSerializable(LOCATION_KEY, locationInfo);
-
-        intent.putExtras(bundle);
-
-        startService(intent);
-    }
 
     /** 当其他活动获得焦点时调用 */
     @Override
@@ -258,34 +231,45 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         if (v.getId() == R.id.next_days_button){
             System.out.println("next days button works well");
             Intent intent = new Intent(getBaseContext(), NextDaysActivity.class);
-            ArrayList<String> date = new ArrayList<>();
-            ArrayList<String> day = new ArrayList<>();
-            ArrayList<String> tempL = new ArrayList<>();
-            ArrayList<String> tempH = new ArrayList<>();
-            date.add("2023-07-24");
-            day.add("Monday");
-            date.add("2023-07-25");
-            day.add("Tuesday");
-            tempH.add("37degree");
-            tempL.add("26degree");
-            tempH.add("37degree");
-            tempL.add("26degree");
-
-            intent.putStringArrayListExtra("date", date);
-            intent.putStringArrayListExtra("day", day);
-            intent.putStringArrayListExtra("tempH", tempH);
-            intent.putStringArrayListExtra("tempL", tempL);
             startActivity(intent);
             nextWeather(locationInfo);
         }
 
-        if (v.getId() == R.id.todayMaterialCard){
-            System.out.println("Main layout click works well");
-            Intent intent = new Intent(getBaseContext(), HourlyWeather.class);
-            hourlyWeather(locationInfo);
-            startActivity(intent);
-        }
+//        if (v.getId() == R.id.todayMaterialCard){
+//            System.out.println("Main layout click works well");
+//            Intent intent = new Intent(getBaseContext(), HourlyWeather.class);
+//            hourlyWeather(locationInfo);
+//            startActivity(intent);
+//        }
         return true;
+    }
+
+    private void nextWeather(LocationInfo locationInfo){
+        Intent intent = new Intent(this, WeatherInquiryService.class);
+
+        intent.setAction(this.getString(R.string.next_7_days));
+
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable(LOCATION_KEY, locationInfo);
+
+        intent.putExtras(bundle);
+
+        startService(intent);
+    }
+
+    private void hourlyWeather(LocationInfo locationInfo) {
+        Intent intent = new Intent(this, WeatherInquiryService.class);
+
+        intent.setAction(this.getString(R.string.hourly_weather));
+
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable(LOCATION_KEY, locationInfo);
+
+        intent.putExtras(bundle);
+
+        startService(intent);
     }
 
     public class WeatherReceiver extends BroadcastReceiver {
