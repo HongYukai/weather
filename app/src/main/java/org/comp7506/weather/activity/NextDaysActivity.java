@@ -72,26 +72,27 @@ public class NextDaysActivity extends ListActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
-            /** TODO: your job **/
-            ArrayList<DayWeatherBean> weatherArray = weatherInfo.getNEXT_DAYS_ARRAY();
-            for(DayWeatherBean dayWeather: weatherArray){
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("day", dayWeather.getDAY());
-                map.put("date", dayWeather.getDATE());
-                map.put("wea_img", dayWeather.getWEATHER_IMG());
-                map.put("tempRange",  dayWeather.getLOWEST_TEMP() + " ~ " + dayWeather.getHEIGHT_TEMP());
-                list.add(map);
+            if(count < 1) {
+                final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
+                /** TODO: your job **/
+                ArrayList<DayWeatherBean> weatherArray = weatherInfo.getNEXT_DAYS_ARRAY();
+                for (DayWeatherBean dayWeather : weatherArray) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("day", dayWeather.getDAY());
+                    map.put("date", dayWeather.getDATE());
+                    map.put("wea_img", dayWeather.getWEATHER_IMG());
+                    map.put("tempRange", dayWeather.getLOWEST_TEMP() + " ~ " + dayWeather.getHEIGHT_TEMP());
+                    list.add(map);
+                }
+                count++;
+
+                SimpleAdapter adapter = new SimpleAdapter(context, list, R.layout.activity_next_days,
+                        new String[]{"date", "day", "tempRange", "tempL"},
+                        new int[]{R.id.date, R.id.day, R.id.temp_range});
+                setListAdapter(adapter);
+
+                Log.d("test_WeatherArray", weatherArray.toString());
             }
-            count ++;
-            System.out.println("count = " + count);
-
-            SimpleAdapter adapter = new SimpleAdapter(context, list, R.layout.activity_next_days,
-                    new String[]{"date", "day", "tempRange", "tempL"},
-                    new int[]{R.id.date, R.id.day, R.id.temp_range});
-            setListAdapter(adapter);
-
-            Log.d("test_WeatherArray", weatherArray.toString());
         }
     }
 
