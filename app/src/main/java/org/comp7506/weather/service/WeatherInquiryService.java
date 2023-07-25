@@ -40,10 +40,10 @@ public class WeatherInquiryService extends IntentService {
     private static final String NEXT_KEY = "18b5cb7b53994bff9296aa3195f38d45";
 
     private static final String CURRENT_WEATHER = "CURRENT_WEATHER";
-
     private static final String NEXT_WEEK_WEATHER = "NEXT 7 DAYS";
-
     private static final int TIMEOUT = 5000;
+
+    private static final String[] WEEKDAYS = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     public WeatherInquiryService() {
         super("WeatherInquiryService");

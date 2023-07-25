@@ -10,11 +10,30 @@
         android:textColor="@color/black"
         android:textSize="16sp"/>
 
-    <TextView android:id = "@+id/day"
+    <TextView android:id = "@+id/wea_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/material_blue"
-        android:textSize="13sp"/>
+        android:textColor="@color/black"
+        android:textSize="16sp"/>
+
+    <TextView android:id = "@+id/highest_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"/>
+
+    <TextView android:id = "@+id/lowest_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"/>
+
+
+<!--    <TextView android:id = "@+id/day"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textColor="@color/material_blue"-->
+<!--        android:textSize="13sp"/>-->
 
 
 
