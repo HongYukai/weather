@@ -13,6 +13,26 @@ public class WeatherInfo implements Serializable {
 
     private String description;
 
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+
+    public double getWind() {
+        return wind;
+    }
+
+    public void setWind(double wind) {
+        this.wind = wind;
+    }
+
+    private int humidity;
+
+    private double wind;
+
     private ArrayList<DayWeatherBean> NEXT_DAYS_ARRAY;
 
     private ArrayList<Map<String, String>> HOURLY_ARRAY;

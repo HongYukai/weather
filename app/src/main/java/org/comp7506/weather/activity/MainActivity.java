@@ -1,6 +1,7 @@
 package org.comp7506.weather.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.PictureDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,7 +26,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -38,9 +42,13 @@ import org.comp7506.weather.model.WeatherInfo;
 import org.comp7506.weather.service.WeatherInquiryService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
 
 public class MainActivity extends Activity implements LocationListener, View.OnClickListener, View.OnTouchListener {
     String msg = "Android : ";
@@ -55,8 +63,6 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     private WeatherReceiver weatherReceiver;
 
-    private TextView text;
-
     private Button nextDaysBtn;
 
     private MaterialCardView card;
@@ -66,6 +72,8 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
     private ImageView imageView;
 
     private TextView citySelector;
+
+    private TextSwitcher temp, text, humidity, wind;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +107,53 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
         imageView = findViewById(R.id.imageView2);
 
-        text = (TextView) findViewById(R.id.description_text_view);
+        text = findViewById(R.id.description_text_view);
+
+        text.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView textView = new TextView(MainActivity.this);
+                textView.setTextSize(20);
+                textView.setTextColor(getResources().getColor(R.color.white));
+                return textView;
+            }
+        });
+
+        temp = findViewById(R.id.temp_text_view);
+
+        temp.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView textView = new TextView(MainActivity.this);
+                textView.setTextSize(32);
+                textView.setTextColor(getResources().getColor(R.color.white));
+                return textView;
+            }
+        });
+
+        humidity = findViewById(R.id.humidity_text_view);
+
+        humidity.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView textView = new TextView(MainActivity.this);
+                textView.setTextSize(16);
+                textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                return textView;
+            }
+        });
+
+        wind = findViewById(R.id.wind_text_view);
+
+        wind.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView textView = new TextView(MainActivity.this);
+                textView.setTextSize(16);
+                textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                return textView;
+            }
+        });
 
         nextDaysBtn = (Button) findViewById(R.id.next_days_button);
 
@@ -332,7 +386,24 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
             progressBar.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.VISIBLE);
+            HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
+            svg_map.put("Clouds", R.raw.wi_cloudy);
+            svg_map.put("Rain", R.raw.wi_rain);
+            svg_map.put("Snow", R.raw.wi_snow);
+            svg_map.put("Clear", R.raw.wi_day_sunny);
+            svg_map.put("Mist", R.raw.wi_fog);
+            SVG svg = null;
+            try {
+                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
+            } catch (SVGParseException e) {
+                throw new RuntimeException(e);
+            }
+            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+            imageView.setImageDrawable(drawable);
             text.setText(weatherInfo.getMain());
+            temp.setText(String.format("%.0f℃", weatherInfo.getTemp()));
+            humidity.setText(String.valueOf(weatherInfo.getHumidity()) + "%");
+            wind.setText(String.valueOf(weatherInfo.getWind()) + "km/h");
         }
     }
 }

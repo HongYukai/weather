@@ -156,7 +156,13 @@ public class WeatherInquiryService extends IntentService {
 
                     JSONObject main = jsonResponse.getJSONObject("main");
 
+                    JSONObject wind = jsonResponse.getJSONObject("wind");
+
                     weatherInfo.setTemp(main.getDouble("temp") - 273.15);
+
+                    weatherInfo.setHumidity(main.getInt("humidity"));
+
+                    weatherInfo.setWind(wind.getInt("speed"));
 
                     Log.d(msg, weatherInfo.toString());
 
