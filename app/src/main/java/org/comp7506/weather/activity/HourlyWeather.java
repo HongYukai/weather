@@ -138,10 +138,10 @@ public class HourlyWeather extends Activity {
 
             weatherInfo.getHOURLY_ARRAY().remove(0);
             hourlyAdapter = new HourlyAdapter(context, weatherInfo.getHOURLY_ARRAY());
-            System.out.println("hourlyAdapterworks"+ hourlyAdapter.getItemCount());
+//            System.out.println("hourlyAdapterworks"+ hourlyAdapter.getItemCount());
             HourlyWeather = findViewById(R.id.hour_recycle_view);
             HourlyWeather.setAdapter(hourlyAdapter);
-            System.out.println("setAdapter works");
+//            System.out.println("setAdapter works");
             LinearLayoutManager layoutManager  =new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             HourlyWeather.setLayoutManager(layoutManager);
 

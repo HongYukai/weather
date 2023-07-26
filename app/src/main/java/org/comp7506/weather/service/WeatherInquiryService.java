@@ -104,7 +104,7 @@ public class WeatherInquiryService extends IntentService {
                         "&lon=" + URLEncoder.encode(lon, "UTF-8") + "&exclude=minutely" +
                         **/ "&appid=" + URLEncoder.encode(API_KEY, "UTF-8");
             }else if(NEXT_WEEK_WEATHER.equalsIgnoreCase(flag)){
-                encodedUrl = url + "&city=" +city;
+                encodedUrl = url + "&city=" + mapCity(city);
 //                encodeUrl = url + "&location" =
             }else{
                 encodedUrl = url + "&location=" + lon + "," + lat + "&key=" + KEY;
@@ -119,7 +119,7 @@ public class WeatherInquiryService extends IntentService {
             // 设置请求方法为 GET
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(TIMEOUT);
-            System.out.println("already get");
+//            System.out.println("already get");
 
             // 发起请求
             int responseCode = connection.getResponseCode();
@@ -220,7 +220,7 @@ public class WeatherInquiryService extends IntentService {
 
                     sendBroadcast(intent);
                 }
-                System.out.println(response.toString());
+//                System.out.println(response.toString());
                 if(HOURLY_WEATHER.equalsIgnoreCase(flag)) {
                     String date = jsonResponse.getString("updateTime").substring(0,10);
                     System.out.println(date);
@@ -278,6 +278,30 @@ public class WeatherInquiryService extends IntentService {
             e.printStackTrace();
         }
 
+    }
+    private String mapCity(String cityEn){
+        String result = "";
+        if(cityEn.equalsIgnoreCase("Guangzhou")) result = "广州";
+        if(cityEn.equalsIgnoreCase("Hong Kong")) result = "香港";
+        if(cityEn.equalsIgnoreCase("Beijing")) result = "北京";
+        if(cityEn.equalsIgnoreCase("Shanghai")) result = "上海";
+        if(cityEn.equalsIgnoreCase("Chengdu")) result = "成都";
+        if(cityEn.equalsIgnoreCase("Chongqing")) result = "重庆";
+        if(cityEn.equalsIgnoreCase("Hangzhou")) result = "杭州";
+        if(cityEn.equalsIgnoreCase("Xian")) result = "西安";
+        if(cityEn.equalsIgnoreCase("Shenzhen")) result = "深圳";
+        if(cityEn.equalsIgnoreCase("Wuhan")) result = "武汉";
+        if(cityEn.equalsIgnoreCase("Tianjin")) result = "天津";
+        if(cityEn.equalsIgnoreCase("Nanjing")) result = "南京";
+        if(cityEn.equalsIgnoreCase("Suzhou")) result = "苏州";
+        if(cityEn.equalsIgnoreCase("Luoyang")) result = "洛阳";
+        if(cityEn.equalsIgnoreCase("Kaifeng")) result = "开封";
+        if(cityEn.equalsIgnoreCase("Yangzhou")) result = "扬州";
+        if(cityEn.equalsIgnoreCase("Changsha")) result = "长沙";
+        if(cityEn.equalsIgnoreCase("Kunming")) result = "昆明";
+        if(cityEn.equalsIgnoreCase("Haerbin")) result = "哈尔滨";
+
+        return result;
     }
 
 

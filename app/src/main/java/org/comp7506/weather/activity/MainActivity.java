@@ -184,7 +184,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String userInput = input.getText().toString();
-                LocationInfo locationInfo = new LocationInfo();
+//                LocationInfo locationInfo = new LocationInfo();
                 locationInfo.setCity(userInput);
                 initCurrentWeather(locationInfo);
                 citySelector.setText(userInput + "    🔍");
@@ -389,7 +389,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             progressBar.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.VISIBLE);
             HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-            svg_map.put("Clouds", R.raw.a_yinmai);
+            svg_map.put("Clouds", R.raw.a_duoyun);
             svg_map.put("Rain", R.raw.a_dayu);
             svg_map.put("Snow", R.raw.a_daxue);
             svg_map.put("Clear", R.raw.a_qing);
