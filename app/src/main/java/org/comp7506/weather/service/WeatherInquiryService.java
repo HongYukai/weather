@@ -236,8 +236,10 @@ public class WeatherInquiryService extends IntentService {
                         JSONObject item = data.getJSONObject(i);
                         String time = item.getString("fxTime").substring(11);
                         String temp = item.getString("temp");
+                        String weather = item.getString("text");
                         hourInfo.put("time", time);
                         hourInfo.put("temp", temp);
+                        hourInfo.put("weather", weather);
                         hourlyList.add(hourInfo);
                 }
                     weatherInfo.setDate(date);

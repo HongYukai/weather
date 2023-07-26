@@ -80,6 +80,7 @@ public class NextDaysActivity extends ListActivity {
 //                new int[]{R.id.date, R.id.day, R.id.wea_img, R.id.highest_temp, R.id.lowest_temp});
     }
 
+
     public class WeatherReceiver extends BroadcastReceiver {
 
         @Override
@@ -89,14 +90,15 @@ public class NextDaysActivity extends ListActivity {
                 final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
                 /** TODO: your job **/
                 HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-                svg_map.put("少云", R.raw.wi_day_sunny_overcast);
-                svg_map.put("多云", R.raw.wi_cloudy);
+                svg_map.put("yun", R.raw.wi_day_sunny_overcast);
+                svg_map.put("yin", R.raw.wi_cloudy);
                 svg_map.put("yu", R.raw.wi_rain);
-                svg_map.put("阵雨", R.raw.wi_day_rain);
-                svg_map.put("雷阵雨", R.raw.wi_day_sleet_storm);
-                svg_map.put("雪", R.raw.wi_snow);
-                svg_map.put("晴", R.raw.wi_day_sunny);
-                svg_map.put("雾", R.raw.wi_fog);
+                svg_map.put("lei", R.raw.wi_day_sleet_storm);
+                svg_map.put("xue", R.raw.wi_snow);
+                svg_map.put("qing", R.raw.wi_day_sunny);
+                svg_map.put("wu", R.raw.wi_fog);
+                svg_map.put("bingbao", R.raw.wi_hail);
+                svg_map.put("shachen", R.raw.wi_dust);
                 ArrayList<DayWeatherBean> weatherArray = weatherInfo.getNEXT_DAYS_ARRAY();
                 for (DayWeatherBean dayWeather : weatherArray) {
                     Map<String, Object> map = new HashMap<String, Object>();

@@ -16,9 +16,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import org.comp7506.weather.HourlyAdapter;
 import org.comp7506.weather.R;
 import org.comp7506.weather.model.CurveView;
 import org.comp7506.weather.model.WeatherInfo;
@@ -46,9 +48,11 @@ public class HourlyWeather extends Activity {
     private ImageView imageView;
 
     private RecyclerView HourlyWeather;
+    private HourlyAdapter hourlyAdapter;
 
     private int  LowestTemp = Integer.MAX_VALUE;
     private int  HighestTemp = Integer.MIN_VALUE;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,25 +98,6 @@ public class HourlyWeather extends Activity {
             DAY = findViewById(R.id.day);
             DAY.setText(weatherInfo.getDate());
 
-            for(Map<String, String> eachHour: weatherInfo.getHOURLY_ARRAY()){
-                String time = eachHour.get("time");
-
-                String temp = eachHour.get("temp");
-                int tempInt  = Integer.parseInt(temp);
-                LowestTemp = Math.min(tempInt, LowestTemp);
-                HighestTemp = Math.max(tempInt, HighestTemp);
-
-                HourlyWeather = (RecyclerView) findViewById(R.id.hour_recycle_view);
-                HourlyWeather.setHasFixedSize(true);
-
-//                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-//                layoutManager.setAutoMeasureEnabled(true);
-//                HourlyWeather.setLayoutManager(layoutManager);
-//
-//                RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-//                HourlyWeather.addItemDecoration(itemDecoration);
-            }
-
             imageView = findViewById(R.id.wea_img);
             imageView.setVisibility(View.VISIBLE);
             HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
@@ -136,11 +121,25 @@ public class HourlyWeather extends Activity {
             CURTEMP = findViewById(R.id.temp);
             CURTEMP.setText(Integer.toString((int) weatherInfo.getTemp()) + "℃");
 
+            for(Map<String, String> eachHour: weatherInfo.getHOURLY_ARRAY()){
+                String temp = eachHour.get("temp");
+                int tempInt  = Integer.parseInt(temp);
+                LowestTemp = Math.min(tempInt, LowestTemp);
+                HighestTemp = Math.max(tempInt, HighestTemp);
+            }
+
             TempH = findViewById(R.id.tempH);
             TempH.setText(Integer.toString(HighestTemp) + "℃");
 
             TempL = findViewById(R.id.tempL);
             TempL.setText(Integer.toString(LowestTemp) + "℃");
+
+
+            weatherInfo.getHOURLY_ARRAY().remove(0);
+            hourlyAdapter = new HourlyAdapter(context, weatherInfo.getHOURLY_ARRAY());
+            HourlyWeather.setAdapter(hourlyAdapter);
+            LinearLayoutManager layoutManager  =new LinearLayoutManager(context, LinearLayout.HORIZONTAL, false);
+            HourlyWeather.setLayoutManager(layoutManager);
 
 
         }
