@@ -136,7 +136,7 @@ public class HourlyWeather extends Activity {
             TempL.setText(Integer.toString(LowestTemp) + "℃");
 
 
-            weatherInfo.getHOURLY_ARRAY().remove(0);
+//            weatherInfo.getHOURLY_ARRAY().remove(0);
             hourlyAdapter = new HourlyAdapter(context, weatherInfo.getHOURLY_ARRAY());
 //            System.out.println("hourlyAdapterworks"+ hourlyAdapter.getItemCount());
             HourlyWeather = findViewById(R.id.hour_recycle_view);

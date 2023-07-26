@@ -53,7 +53,7 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.WeatherVie
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, int position) {
         Map<String, String> hourWeather = hourWeatherList.get(position);
 
-        String t = hourWeather.get("time").substring(0,2);
+        String t = hourWeather.get("time");
         if(Integer.parseInt(t) >= 12){
             holder.time.setText(t + "pm");
         }else{

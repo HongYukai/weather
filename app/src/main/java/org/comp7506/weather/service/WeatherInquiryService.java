@@ -155,7 +155,7 @@ public class WeatherInquiryService extends IntentService {
             }
             // 创建 URL 对象
             System.out.println(encodedUrl);
-            java.net.URL apiUrl = new URL(encodedUrl);
+            URL apiUrl = new URL(encodedUrl);
 
             // 打开连接
             HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -278,10 +278,11 @@ public class WeatherInquiryService extends IntentService {
                     for (int i = 0; i < data.length(); i++) {
                         Map<String, String> hourInfo = new HashMap<>();
                         JSONObject item = data.getJSONObject(i);
-                        String time = item.getString("fxTime").substring(11);
+                        int timezone = Integer.parseInt(item.getString("fxTime").substring(11,13));
+                        int time = ((timezone + 7)%24);
                         String temp = item.getString("temp");
                         String weather = item.getString("text");
-                        hourInfo.put("time", time);
+                        hourInfo.put("time", String.valueOf(time));
                         hourInfo.put("temp", temp);
                         hourInfo.put("weather", weather);
                         hourlyList.add(hourInfo);
