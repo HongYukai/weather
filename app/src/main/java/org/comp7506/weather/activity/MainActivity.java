@@ -374,6 +374,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
         bundle.putSerializable(LOCATION_KEY, locationInfo);
 
+
         intent.putExtras(bundle);
 
         startService(intent);
