@@ -52,6 +52,7 @@ public class WeatherInquiryService extends IntentService {
     private static final String HOURLY_WEATHER = "HOURLY WEATHER";
     private static final int TIMEOUT = 5000;
     private static final Map<String, String> map = new HashMap<String, String>();
+    private static final Map<String, String> IconMap = new HashMap<String, String>();
 
     public WeatherInquiryService() {
         super("WeatherInquiryService");
@@ -90,6 +91,10 @@ public class WeatherInquiryService extends IntentService {
         map.put("星期五", "Friday");
         map.put("星期六", "Saturday");
         map.put("星期日", "Sunday");
+
+        IconMap.put("少云", "Clouds");
+        IconMap.put("晴", "Clear");
+        IconMap.put("雨","Rain");
 
         try {
             String encodedUrl = "";
@@ -218,23 +223,26 @@ public class WeatherInquiryService extends IntentService {
                 System.out.println(response.toString());
                 if(HOURLY_WEATHER.equalsIgnoreCase(flag)) {
                     String date = jsonResponse.getString("updateTime").substring(0,10);
+                    System.out.println(date);
                     JSONArray data = jsonResponse.getJSONArray("hourly");
                     ArrayList<Map<String, String>> hourlyList = new ArrayList<>();
 
                     JSONObject startItem = data.getJSONObject(0);
                     String curTemp = startItem.getString("temp");
+                    String curIcon = startItem.getString("text");
 
                     for (int i = 0; i < data.length(); i++) {
                         Map<String, String> hourInfo = new HashMap<>();
                         JSONObject item = data.getJSONObject(i);
-                        date = item.getString("fxTime").substring(0,10);
                         String time = item.getString("fxTime").substring(11);
                         String temp = item.getString("temp");
                         hourInfo.put("time", time);
                         hourInfo.put("temp", temp);
                         hourlyList.add(hourInfo);
                 }
-                    weatherInfo.setMain(date);
+                    weatherInfo.setDate(date);
+
+                    weatherInfo.setMain(curIcon);
 
                     weatherInfo.setTemp(Double.parseDouble(curTemp));
 

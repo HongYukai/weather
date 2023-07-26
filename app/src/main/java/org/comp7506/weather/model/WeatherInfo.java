@@ -9,6 +9,8 @@ import java.util.Map;
 public class WeatherInfo implements Serializable {
     private double temp;
 
+    private String date;
+
     private String main;
 
     private String description;
@@ -79,6 +81,13 @@ public class WeatherInfo implements Serializable {
         this.HOURLY_ARRAY = HOURLY_ARRAY;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Override
     public String toString() {
