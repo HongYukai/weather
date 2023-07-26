@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,25 +102,35 @@ public class NextDaysActivity extends ListActivity {
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("day", dayWeather.getDAY());
                     map.put("date", dayWeather.getDATE());
-                    map.put("wea_img", svg_map.get(dayWeather.getWEATHER_IMG()));
-//                    System.out.println(svg_map.get(dayWeather.getWEATHER_IMG()));
-//                    SVG svg = null;
-//                    try {
-//                        svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
-//                    } catch (SVGParseException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-//                    imageView.setImageDrawable(drawable);
+                    SVG svg = null;
+                    try {
+                        svg = SVG.getFromResource(context, svg_map.get(dayWeather.getWEATHER_IMG()) == null ? R.raw.wi_rain : svg_map.get(dayWeather.getWEATHER_IMG()));
+                    } catch (SVGParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    map.put("wea_img",svg.renderToPicture());
 
                     map.put("tempRange", dayWeather.getLOWEST_TEMP() + " ~ " + dayWeather.getHEIGHT_TEMP());
                     list.add(map);
                 }
                 count++;
                 SimpleAdapter adapter = new SimpleAdapter(context, list, R.layout.activity_next_days,
-                        new String[]{"date", "day", "tempRange"},
-                        new int[]{R.id.date, R.id.day, R.id.temp_range});
+                        new String[]{"date", "day","wea_img", "tempRange"},
+                        new int[]{R.id.date, R.id.day, R.id.wea_img, R.id.temp_range});
+
+                adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+                    public boolean setViewValue(View view, Object data,
+                                                String textRepresentation) {
+                        if (view instanceof ImageView && data instanceof Drawable) {
+                            ImageView iv = (ImageView) view;
+                            iv.setImageDrawable((Drawable) data);
+                            return true;
+                        } else
+                            return false;
+                    }
+                });
                 setListAdapter(adapter);
+
 
                 Log.d("test_WeatherArray", weatherArray.toString());
             }
