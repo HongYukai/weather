@@ -457,7 +457,7 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
                             + weatherInfo.getTemp() + ", the humidity is" + weatherInfo.getHumidity()
                             + ", the wind speed is" + weatherInfo.getWind()
                             + ". Please give me some tips about outfit, outdoor activities and so on. Do not exceed 80 words." +
-                            " Do not describe or conclude the information I have mentioned.");
+                            " Do not describe or conclude the information I have mentioned. Show the tips using short words instead of a sentence.");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
