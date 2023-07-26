@@ -17,7 +17,7 @@
             android:id="@+id/toolbarLayout"
             layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="68dp" />
+            android:layout_height="30dp" />
 
 
         <include
@@ -33,7 +33,7 @@
                 android:id="@+id/contentMainLayout"
                 layout="@layout/content_main"
                 android:layout_width="match_parent"
-                android:layout_height="472dp" />
+                android:layout_height="wrap_content" />
 
 
             <com.google.android.material.bottomappbar.BottomAppBar

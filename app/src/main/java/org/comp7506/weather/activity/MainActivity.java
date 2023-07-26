@@ -41,6 +41,13 @@ import org.comp7506.weather.model.LocationInfo;
 import org.comp7506.weather.model.WeatherInfo;
 import org.comp7506.weather.service.WeatherInquiryService;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +56,12 @@ import java.util.Scanner;
 
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends Activity implements LocationListener, View.OnClickListener, View.OnTouchListener {
     String msg = "Android : ";
@@ -73,7 +86,13 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     private TextView citySelector;
 
+    private TextView tipsView;
+
     private TextSwitcher temp, text, humidity, wind;
+
+    public static final String QUERY_KEY = "qkqkqk";
+
+    public static final String QUERY_RESPONSE = "qrqrqr";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +120,8 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
         filter.addAction(this.getString(R.string.current_weather));
 
+        filter.addAction(QUERY_RESPONSE);
+
         this.registerReceiver(weatherReceiver, filter);
 
         progressBar = findViewById(R.id.progressBar);
@@ -108,6 +129,8 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         imageView = findViewById(R.id.imageView2);
 
         text = findViewById(R.id.description_text_view);
+
+        tipsView = findViewById(R.id.tips);
 
         text.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
@@ -172,6 +195,23 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
             }
         });
     }
+
+    private void fetchTips(String query) throws IOException {
+        Intent intent = new Intent(this, WeatherInquiryService.class);
+
+        intent.setAction(this.getString(R.string.tips));
+
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable(QUERY_KEY, query);
+
+        intent.putExtras(bundle);
+
+        startService(intent);
+
+
+    }
+
 
     private void showInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -385,15 +425,20 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
         @SuppressLint("ResourceType")
         @Override
         public void onReceive(Context context, Intent intent) {
-            final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
-            progressBar.setVisibility(View.INVISIBLE);
-            imageView.setVisibility(View.VISIBLE);
-            HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-            svg_map.put("Clouds", R.raw.a_duoyun);
-            svg_map.put("Rain", R.raw.a_dayu);
-            svg_map.put("Snow", R.raw.a_daxue);
-            svg_map.put("Clear", R.raw.a_qing);
-            svg_map.put("Mist", R.raw.a_yinmai);
+            if (intent.getAction().equalsIgnoreCase(QUERY_RESPONSE)) {
+                String tips = (String) intent.getSerializableExtra(QUERY_KEY);
+                tipsView.setText(tips);
+            }
+            else {
+                final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
+                progressBar.setVisibility(View.INVISIBLE);
+                imageView.setVisibility(View.VISIBLE);
+                HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
+                svg_map.put("Clouds", R.raw.a_duoyun);
+                svg_map.put("Rain", R.raw.a_dayu);
+                svg_map.put("Snow", R.raw.a_daxue);
+                svg_map.put("Clear", R.raw.a_qing);
+                svg_map.put("Mist", R.raw.a_yinmai);
 //            SVG svg = null;
 //            try {
 //                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
@@ -401,13 +446,23 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 //                throw new RuntimeException(e);
 //            }
 //            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-            int imgSource = svg_map.get(weatherInfo.getMain()) == null ? R.raw.a_unknown: svg_map.get(weatherInfo.getMain());
-            imageView.setImageResource(imgSource);
-//            imageView.setImageDrawable(drawable);
-            text.setText(weatherInfo.getMain());
-            temp.setText(String.format("%.0f℃", weatherInfo.getTemp()));
-            humidity.setText(String.valueOf(weatherInfo.getHumidity()) + "%");
-            wind.setText(String.valueOf(weatherInfo.getWind()) + "km/h");
+                int imgSource = svg_map.get(weatherInfo.getMain()) == null ? R.raw.a_unknown: svg_map.get(weatherInfo.getMain());
+                imageView.setImageResource(imgSource);
+                text.setText(weatherInfo.getMain());
+                temp.setText(String.format("%.0f℃", weatherInfo.getTemp()));
+                humidity.setText(String.valueOf(weatherInfo.getHumidity()) + "%");
+                wind.setText(String.valueOf(weatherInfo.getWind()) + "km/h");
+                try {
+                    fetchTips("Now is" + weatherInfo.getMain() + ", the temperature is"
+                            + weatherInfo.getTemp() + ", the humidity is" + weatherInfo.getHumidity()
+                            + ", the wind speed is" + weatherInfo.getWind()
+                            + ". Please give me some tips about outfit, outdoor activities and so on. Do not exceed 80 words." +
+                            " Do not describe or conclude the information I have mentioned.");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
         }
     }
 }

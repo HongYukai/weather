@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -51,6 +52,8 @@ public class WeatherInquiryService extends IntentService {
 
     private static final String HOURLY_WEATHER = "HOURLY WEATHER";
     private static final int TIMEOUT = 5000;
+
+    private static final String TIPS = "Tips:";
     private static final Map<String, String> map = new HashMap<String, String>();
     private static final Map<String, String> IconMap = new HashMap<String, String>();
 
@@ -64,12 +67,53 @@ public class WeatherInquiryService extends IntentService {
             final String action = intent.getAction();
             System.out.println("intent action: " + action);
             final LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(MainActivity.LOCATION_KEY);
+            final String query = (String) intent.getSerializableExtra(MainActivity.QUERY_KEY);
             if (CURRENT_WEATHER.equalsIgnoreCase(action)) {
                 makeRequest(locationInfo, CURRENT_URL, CURRENT_WEATHER);
                 //TODO: 增加hourly weather, halfmonth weather
             } else if (NEXT_WEEK_WEATHER.equalsIgnoreCase(action)){
                 makeRequest(locationInfo, NEXT_WEEK_URL, NEXT_WEEK_WEATHER);
-            } else{
+            }
+            else if (TIPS.equalsIgnoreCase(action)) {
+                try {
+                    String res = "";
+                    String url = "http://audit.nat100.top?query=" + query;
+                    URL serverUrl = new URL(url);
+                    HttpURLConnection connection = (HttpURLConnection) serverUrl.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+                        reader.close();
+                        res = response.toString();
+                        Log.d(msg, res);
+                    } else {
+                        Log.d(msg, "Request failed with response code: " + responseCode);
+                    }
+                    Intent i = new Intent();
+
+                    i.setAction(MainActivity.QUERY_RESPONSE);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putSerializable(MainActivity.QUERY_KEY, res);
+
+                    i.putExtras(bundle);
+
+                    sendBroadcast(i);
+                }
+                catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            else{
                 makeRequest(locationInfo, HOURLY_URL, HOURLY_WEATHER);
             }
         }
