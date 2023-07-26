@@ -382,25 +382,28 @@ public class MainActivity extends Activity implements LocationListener, View.OnC
 
     public class WeatherReceiver extends BroadcastReceiver {
 
+        @SuppressLint("ResourceType")
         @Override
         public void onReceive(Context context, Intent intent) {
             final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
             progressBar.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.VISIBLE);
             HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-            svg_map.put("Clouds", R.raw.wi_cloudy);
-            svg_map.put("Rain", R.raw.wi_rain);
-            svg_map.put("Snow", R.raw.wi_snow);
-            svg_map.put("Clear", R.raw.wi_day_sunny);
-            svg_map.put("Mist", R.raw.wi_fog);
-            SVG svg = null;
-            try {
-                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
-            } catch (SVGParseException e) {
-                throw new RuntimeException(e);
-            }
-            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-            imageView.setImageDrawable(drawable);
+            svg_map.put("Clouds", R.raw.a_yinmai);
+            svg_map.put("Rain", R.raw.a_dayu);
+            svg_map.put("Snow", R.raw.a_daxue);
+            svg_map.put("Clear", R.raw.a_qing);
+            svg_map.put("Mist", R.raw.a_yinmai);
+//            SVG svg = null;
+//            try {
+//                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
+//            } catch (SVGParseException e) {
+//                throw new RuntimeException(e);
+//            }
+//            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+            int imgSource = svg_map.get(weatherInfo.getMain()) == null ? R.raw.a_unknown: svg_map.get(weatherInfo.getMain());
+            imageView.setImageResource(imgSource);
+//            imageView.setImageDrawable(drawable);
             text.setText(weatherInfo.getMain());
             temp.setText(String.format("%.0f℃", weatherInfo.getTemp()));
             humidity.setText(String.valueOf(weatherInfo.getHumidity()) + "%");

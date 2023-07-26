@@ -90,27 +90,28 @@ public class NextDaysActivity extends ListActivity {
                 final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
                 /** TODO: your job **/
                 HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-                svg_map.put("yun", R.raw.wi_day_sunny_overcast);
-                svg_map.put("yin", R.raw.wi_cloudy);
-                svg_map.put("yu", R.raw.wi_rain);
-                svg_map.put("lei", R.raw.wi_day_sleet_storm);
-                svg_map.put("xue", R.raw.wi_snow);
-                svg_map.put("qing", R.raw.wi_day_sunny);
-                svg_map.put("wu", R.raw.wi_fog);
-                svg_map.put("bingbao", R.raw.wi_hail);
-                svg_map.put("shachen", R.raw.wi_dust);
+                svg_map.put("yun", R.raw.a_duoyun);
+                svg_map.put("yin", R.raw.a_yin);
+                svg_map.put("yu", R.raw.a_dayu);
+                svg_map.put("lei", R.raw.a_leizhenyu);
+                svg_map.put("xue", R.raw.a_daxue);
+                svg_map.put("qing", R.raw.a_qing);
+                svg_map.put("wu", R.raw.a_wu);
+                svg_map.put("bingbao", R.raw.a_yujiabingbao);
+                svg_map.put("shachen", R.raw.a_yinmai);
                 ArrayList<DayWeatherBean> weatherArray = weatherInfo.getNEXT_DAYS_ARRAY();
                 for (DayWeatherBean dayWeather : weatherArray) {
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("day", dayWeather.getDAY());
                     map.put("date", dayWeather.getDATE());
-                    SVG svg = null;
-                    try {
-                        svg = SVG.getFromResource(context, svg_map.get(dayWeather.getWEATHER_IMG()) == null ? R.raw.wi_rain : svg_map.get(dayWeather.getWEATHER_IMG()));
-                    } catch (SVGParseException e) {
-                        throw new RuntimeException(e);
-                    }
-                    map.put("wea_img",svg.renderToPicture());
+//                    SVG svg = null;
+//                    try {
+//                        svg = SVG.getFromResource(context, svg_map.get(dayWeather.getWEATHER_IMG()) == null ? R.raw.wi_rain : svg_map.get(dayWeather.getWEATHER_IMG()));
+//                    } catch (SVGParseException e) {
+//                        throw new RuntimeException(e);
+//                    }
+                    int imgSource = svg_map.get(dayWeather.getWEATHER_IMG())== null ? R.raw.a_unknown: svg_map.get(dayWeather.getWEATHER_IMG());
+                    map.put("wea_img", imgSource);
 
                     map.put("tempRange", dayWeather.getLOWEST_TEMP() + " ~ " + dayWeather.getHEIGHT_TEMP());
                     list.add(map);

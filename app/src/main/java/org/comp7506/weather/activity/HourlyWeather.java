@@ -89,7 +89,7 @@ public class HourlyWeather extends Activity {
 
     public class WeatherReceiver extends BroadcastReceiver {
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint({"SetTextI18n", "ResourceType"})
         @Override
         public void onReceive(Context context, Intent intent) {
             final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
@@ -101,22 +101,23 @@ public class HourlyWeather extends Activity {
             imageView = findViewById(R.id.wea_img);
             imageView.setVisibility(View.VISIBLE);
             HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-            svg_map.put("少云", R.raw.wi_day_sunny_overcast);
-            svg_map.put("多云", R.raw.wi_cloudy);
-            svg_map.put("雨", R.raw.wi_rain);
-            svg_map.put("阵雨", R.raw.wi_day_rain);
-            svg_map.put("雷阵雨", R.raw.wi_day_sleet_storm);
-            svg_map.put("雪", R.raw.wi_snow);
-            svg_map.put("晴", R.raw.wi_day_sunny);
-            svg_map.put("雾", R.raw.wi_fog);
-            SVG svg = null;
-            try {
-                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
-            } catch (SVGParseException e) {
-                throw new RuntimeException(e);
-            }
-            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-            imageView.setImageDrawable(drawable);
+            svg_map.put("少云", R.raw.a_duoyun);
+            svg_map.put("多云", R.raw.a_duoyun);
+            svg_map.put("雨", R.raw.a_xiaoyu);
+            svg_map.put("阵雨", R.raw.a_zhenyu);
+            svg_map.put("雷阵雨", R.raw.a_leizhenyu);
+            svg_map.put("雪", R.raw.a_daxue);
+            svg_map.put("晴", R.raw.a_qing);
+            svg_map.put("雾", R.raw.a_wu);
+//            SVG svg = null;
+//            try {
+//                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
+//            } catch (SVGParseException e) {
+//                throw new RuntimeException(e);
+//            }
+//            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+            int imgSource = svg_map.get(weatherInfo.getMain()) == null ? R.raw.a_unknown: svg_map.get(weatherInfo.getMain());
+            imageView.setImageResource(imgSource);
 
             CURTEMP = findViewById(R.id.temp);
             CURTEMP.setText(Integer.toString((int) weatherInfo.getTemp()) + "℃");

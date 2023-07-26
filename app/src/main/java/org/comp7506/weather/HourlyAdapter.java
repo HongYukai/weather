@@ -1,5 +1,6 @@
 package org.comp7506.weather;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.graphics.drawable.PictureDrawable;
@@ -28,14 +29,14 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.WeatherVie
     public HourlyAdapter(Context context, List<Map<String, String>> hourWeatherList) {
         this.context = context;
         this.hourWeatherList = hourWeatherList;
-        svg_map.put("少云", R.raw.wi_day_sunny_overcast);
-        svg_map.put("多云", R.raw.wi_cloudy);
-        svg_map.put("雨", R.raw.wi_rain);
-        svg_map.put("阵雨", R.raw.wi_day_rain);
-        svg_map.put("雷阵雨", R.raw.wi_day_sleet_storm);
-        svg_map.put("雪", R.raw.wi_snow);
-        svg_map.put("晴", R.raw.wi_day_sunny);
-        svg_map.put("雾", R.raw.wi_fog);
+        svg_map.put("少云", R.raw.a_duoyun);
+        svg_map.put("多云", R.raw.a_duoyun);
+        svg_map.put("雨", R.raw.a_xiaoyu);
+        svg_map.put("阵雨", R.raw.a_zhenyu);
+        svg_map.put("雷阵雨", R.raw.a_leizhenyu);
+        svg_map.put("雪", R.raw.a_daxue);
+        svg_map.put("晴", R.raw.a_qing);
+        svg_map.put("雾", R.raw.a_wu);
     }
 
     @NonNull
@@ -47,6 +48,7 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.WeatherVie
         return weatherViewHolder;
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, int position) {
         Map<String, String> hourWeather = hourWeatherList.get(position);
@@ -59,15 +61,15 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.WeatherVie
         }
 
         holder.temp.setText(hourWeather.get("temp") + "℃");
-        SVG svg;
-        try {
-            svg = SVG.getFromResource(context, svg_map.get(hourWeather.get("weather")) == null ? R.raw.wi_rain : svg_map.get(hourWeather.get("weather")));
-        } catch (SVGParseException e) {
-            throw new RuntimeException(e);
-        }
-        PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-        holder.weather.setImageDrawable(drawable);
-//        holder.weather.setImageResource(svg_map.get(hourWeather.get("weather")));
+//        SVG svg;
+//        try {
+//            svg = SVG.getFromResource(context, svg_map.get(hourWeather.get("weather")) == null ? R.raw.wi_rain : svg_map.get(hourWeather.get("weather")));
+//        } catch (SVGParseException e) {
+//            throw new RuntimeException(e);
+//        }
+//        PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+//        holder.weather.setImageDrawable(drawable);
+        holder.weather.setImageResource(svg_map.get(hourWeather.get("weather")));
     }
 
     @Override

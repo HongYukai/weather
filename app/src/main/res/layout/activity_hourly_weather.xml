@@ -18,9 +18,8 @@
 
     <ImageView
         android:id="@+id/wea_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:translationX="130dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_below="@+id/day"
         android:scaleType="centerCrop" />
