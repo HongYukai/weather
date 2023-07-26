@@ -28,9 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.caverock.androidsvg.SVG;
-import com.caverock.androidsvg.SVGParseException;
-
 public class HourlyWeather extends Activity {
 
     public final String WEATHER_KEY = "hwk";
@@ -38,6 +35,8 @@ public class HourlyWeather extends Activity {
     private HourlyWeather.WeatherReceiver weatherReceiver;
 
     private TextView DAY;
+
+    private TextView CURTEMP;
     private TextView TempH;
     private TextView TempL;
     private ImageView imageView;
@@ -108,21 +107,8 @@ public class HourlyWeather extends Activity {
 //                RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 //                HourlyWeather.addItemDecoration(itemDecoration);
             }
-            imageView = findViewById(R.id.hour_view);
-            imageView.setVisibility(View.VISIBLE);
-            HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-            svg_map.put("Clouds", R.raw.wi_cloudy);
-            svg_map.put("Rain", R.raw.wi_rain);
-            svg_map.put("Snow", R.raw.wi_snow);
-            svg_map.put("Clear", R.raw.wi_day_sunny);
-            svg_map.put("Mist", R.raw.wi_fog);
-            SVG svg = null;
-            try {
-                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
-            } catch (SVGParseException e) {
-                throw new RuntimeException(e);
-            }
-            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+            CURTEMP = findViewById(R.id.temp);
+            CURTEMP.setText((int) weatherInfo.getTemp());
 
             TempH = findViewById(R.id.tempH);
             TempH.setText(Integer.toString(HighestTemp) + "℃");

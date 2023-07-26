@@ -220,6 +220,10 @@ public class WeatherInquiryService extends IntentService {
                     String date = jsonResponse.getString("updateTime").substring(0,10);
                     JSONArray data = jsonResponse.getJSONArray("hourly");
                     ArrayList<Map<String, String>> hourlyList = new ArrayList<>();
+
+                    JSONObject startItem = data.getJSONObject(0);
+                    String curTemp = startItem.getString("temp");
+
                     for (int i = 0; i < data.length(); i++) {
                         Map<String, String> hourInfo = new HashMap<>();
                         JSONObject item = data.getJSONObject(i);
@@ -231,6 +235,8 @@ public class WeatherInquiryService extends IntentService {
                         hourlyList.add(hourInfo);
                 }
                     weatherInfo.setMain(date);
+
+                    weatherInfo.setTemp(Double.parseDouble(curTemp));
 
                     weatherInfo.setHOURLY_ARRAY(hourlyList);
 
