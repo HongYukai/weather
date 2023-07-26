@@ -113,22 +113,25 @@ public class HourlyWeather extends Activity {
 //                HourlyWeather.addItemDecoration(itemDecoration);
             }
 
-            imageView.findViewById(R.id.wea_img);
+            imageView = findViewById(R.id.wea_img);
             imageView.setVisibility(View.VISIBLE);
-//            HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
-//            svg_map.put("Clouds", R.raw.wi_cloudy);
-//            svg_map.put("Rain", R.raw.wi_rain);
-//            svg_map.put("Snow", R.raw.wi_snow);
-//            svg_map.put("Clear", R.raw.wi_day_sunny);
-//            svg_map.put("Mist", R.raw.wi_fog);
-//            SVG svg = null;
-//            try {
-//                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
-//            } catch (SVGParseException e) {
-//                throw new RuntimeException(e);
-//            }
-//            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-//            imageView.setImageDrawable(drawable);
+            HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
+            svg_map.put("少云", R.raw.wi_day_sunny_overcast);
+            svg_map.put("多云", R.raw.wi_cloudy);
+            svg_map.put("雨", R.raw.wi_rain);
+            svg_map.put("阵雨", R.raw.wi_day_rain);
+            svg_map.put("雷阵雨", R.raw.wi_day_sleet_storm);
+            svg_map.put("雪", R.raw.wi_snow);
+            svg_map.put("晴", R.raw.wi_day_sunny);
+            svg_map.put("雾", R.raw.wi_fog);
+            SVG svg = null;
+            try {
+                svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
+            } catch (SVGParseException e) {
+                throw new RuntimeException(e);
+            }
+            PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+            imageView.setImageDrawable(drawable);
 
             CURTEMP = findViewById(R.id.temp);
             CURTEMP.setText(Integer.toString((int) weatherInfo.getTemp()) + "℃");

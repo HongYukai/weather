@@ -7,14 +7,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
 
 import org.comp7506.weather.R;
 import org.comp7506.weather.bean.DayWeatherBean;
@@ -27,7 +32,8 @@ import java.util.Map;
 public class NextDaysActivity extends ListActivity {
 
     ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-    Map<String, Object> map = new HashMap<String, Object>();
+
+
 
     public final String WEATHER_KEY = "nwk";
 
@@ -36,26 +42,13 @@ public class NextDaysActivity extends ListActivity {
 
     private ProgressBar progressBar;
 
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 //        setContentView(R.layout.activity_next_days);
-
-//        Intent intent = this.getIntent();
-
-//        ArrayList<String> date = intent.getStringArrayListExtra("date");
-//        ArrayList<String> day = intent.getStringArrayListExtra("day");
-//        ArrayList<String> tempH = intent.getStringArrayListExtra("tempH");
-//        ArrayList<String> tempL = intent.getStringArrayListExtra("tempL");
-//        for(int i = 0; i < date.size(); i++){
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("date", date.get(i));
-//            map.put("day", day.get(i));
-//            map.put("tempH", tempH.get(i));
-//            map.put("tempL", tempL.get(i));
-//            list.add(map);
-//        }
 
         weatherReceiver = new WeatherReceiver();
 
@@ -84,11 +77,6 @@ public class NextDaysActivity extends ListActivity {
 //        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.activity_next_days,
 //                new String[]{"date", "day", "wea_img", "highest_temp", "lowest_temp"},
 //                new int[]{R.id.date, R.id.day, R.id.wea_img, R.id.highest_temp, R.id.lowest_temp});
-
-
-
-        System.out.println("print out  map list: " + list.toString());
-
     }
 
     public class WeatherReceiver extends BroadcastReceiver {
@@ -99,18 +87,37 @@ public class NextDaysActivity extends ListActivity {
 //                progressBar.setVisibility(View.GONE);
                 final WeatherInfo weatherInfo = (WeatherInfo) intent.getSerializableExtra(WEATHER_KEY);
                 /** TODO: your job **/
+                HashMap<String, Integer> svg_map = new HashMap<String, Integer>();
+                svg_map.put("少云", R.raw.wi_day_sunny_overcast);
+                svg_map.put("多云", R.raw.wi_cloudy);
+                svg_map.put("yu", R.raw.wi_rain);
+                svg_map.put("阵雨", R.raw.wi_day_rain);
+                svg_map.put("雷阵雨", R.raw.wi_day_sleet_storm);
+                svg_map.put("雪", R.raw.wi_snow);
+                svg_map.put("晴", R.raw.wi_day_sunny);
+                svg_map.put("雾", R.raw.wi_fog);
                 ArrayList<DayWeatherBean> weatherArray = weatherInfo.getNEXT_DAYS_ARRAY();
                 for (DayWeatherBean dayWeather : weatherArray) {
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("day", dayWeather.getDAY());
                     map.put("date", dayWeather.getDATE());
-                    map.put("wea_img", dayWeather.getWEATHER_IMG());
+                    map.put("wea_img", svg_map.get(dayWeather.getWEATHER_IMG()));
+//                    System.out.println(svg_map.get(dayWeather.getWEATHER_IMG()));
+//                    SVG svg = null;
+//                    try {
+//                        svg = SVG.getFromResource(context, svg_map.get(weatherInfo.getMain()) == null ? R.raw.wi_rain : svg_map.get(weatherInfo.getMain()));
+//                    } catch (SVGParseException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+//                    imageView.setImageDrawable(drawable);
+
                     map.put("tempRange", dayWeather.getLOWEST_TEMP() + " ~ " + dayWeather.getHEIGHT_TEMP());
                     list.add(map);
                 }
                 count++;
                 SimpleAdapter adapter = new SimpleAdapter(context, list, R.layout.activity_next_days,
-                        new String[]{"date", "day", "tempRange", "tempL"},
+                        new String[]{"date", "day", "tempRange"},
                         new int[]{R.id.date, R.id.day, R.id.temp_range});
                 setListAdapter(adapter);
 

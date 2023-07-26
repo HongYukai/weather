@@ -22,6 +22,7 @@
                 android:layout_height="wrap_content"
                 android:textFontWeight="1200"
                 android:text="Hong Kong    🔍"
+                android:textSize="20dp"
                 android:gravity="center_horizontal" />
 
             <androidx.appcompat.widget.AppCompatTextView
