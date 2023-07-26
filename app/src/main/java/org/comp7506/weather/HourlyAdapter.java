@@ -43,24 +43,31 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.WeatherVie
     public WeatherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.each_hour_weather_layout,parent,false);
         WeatherViewHolder weatherViewHolder = new WeatherViewHolder(view);
-        return null;
+        System.out.println("weatherViewHolder" +  weatherViewHolder);
+        return weatherViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, int position) {
         Map<String, String> hourWeather = hourWeatherList.get(position);
 
-        holder.time.setText(hourWeather.get("time"));
-        holder.temp.setText(hourWeather.get("temp"));
-//        SVG svg;
-//        try {
-//            svg = SVG.getFromResource(context, svg_map.get(hourWeather.get("weather")) == null ? R.raw.wi_rain : svg_map.get(hourWeather.get("weather")));
-//        } catch (SVGParseException e) {
-//            throw new RuntimeException(e);
-//        }
-//        PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-//        holder.weather.setImageDrawable(drawable);
+        String t = hourWeather.get("time").substring(0,2);
+        if(Integer.parseInt(t) >= 12){
+            holder.time.setText(t + "pm");
+        }else{
+            holder.time.setText(t + "am");
+        }
 
+        holder.temp.setText(hourWeather.get("temp") + "℃");
+        SVG svg;
+        try {
+            svg = SVG.getFromResource(context, svg_map.get(hourWeather.get("weather")) == null ? R.raw.wi_rain : svg_map.get(hourWeather.get("weather")));
+        } catch (SVGParseException e) {
+            throw new RuntimeException(e);
+        }
+        PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+        holder.weather.setImageDrawable(drawable);
+//        holder.weather.setImageResource(svg_map.get(hourWeather.get("weather")));
     }
 
     @Override
